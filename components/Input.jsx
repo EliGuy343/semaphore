@@ -8,6 +8,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { useRef, useState } from 'react';
+import EmojiPicker from 'emoji-picker-react';
 
 
 const Input = () => {
@@ -16,6 +17,10 @@ const Input = () => {
   const [selectedFile, setSelectedFile ] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const filePickerRef = useRef();
+  const addEmoji = (emojiObject, event) => {
+    let emoji = String.fromCodePoint(`0x${emojiObject.unified}`);
+    setInput(input+emoji);
+  }
 
   const addImageToPost = () => {}
 
@@ -87,6 +92,20 @@ const Input = () => {
             <div className='icon'>
               <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
             </div>
+            {showEmojis && (
+              <div
+                className='absolute mt-[320px] ml-[40px] max-w-[220px]
+                  border-r-8'
+              >
+                <EmojiPicker
+                  onEmojiClick={addEmoji}
+                  theme='dark'
+                  height={320}
+                  width={320}
+                />
+              </div>
+            )}
+
           </div>
         </div>
 

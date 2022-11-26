@@ -6,7 +6,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.0.8",
+    "@emoji-mart/react": "^1.0.1",
     "@heroicons/react": "^2.0.13",
+    "emoji-mart": "^5.3.3",
+    "emoji-picker-react": "^4.4.5",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"
