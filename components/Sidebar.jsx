@@ -7,6 +7,7 @@ import {
   InboxIcon,
   BookmarkIcon,
   UserIcon,
+  ListBulletIcon,
   EllipsisHorizontalIcon
 } from '@heroicons/react/24/outline'
 const Sidebar = () => {
@@ -33,6 +34,7 @@ const Sidebar = () => {
         <SidebarLink text='Inbox' Icon={InboxIcon} />
         <SidebarLink text='Bookmarks' Icon={BookmarkIcon} />
         <SidebarLink text='User Settings' Icon={UserIcon} />
+        <SidebarLink text='Lists' Icon={ListBulletIcon} />
         <SidebarLink text='More' Icon={EllipsisHorizontalIcon} />
         <button
           className='hidden xl:inline ml-auto bg-[#1d9bf0] text-white
@@ -42,12 +44,12 @@ const Sidebar = () => {
         </button>
         <div
           className="text-[#d9d9d9] flex items-center justify-center
-            hoverAnimation xl:ml-auto xl:mr-5 mt-auto"
+            mt-auto hoverAnimation xl:ml-auto xl:mr-5"
         >
           <img
             src='https://i.imgur.com/dAdnl2y.png'
             alt='profile pic'
-            className="h-10 w-10 rounded-full xl:mr-2.5"
+            className="h-10 w-10 rounded-full sm:ml-4 xl:mr-2.5"
           />
           <div className="hidden xl:inline leading-5">
             <h4 className="font-bold">firebase 1478</h4>
