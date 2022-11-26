@@ -1,16 +1,21 @@
+//TODO: fix scrollbar
+
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+
 
 const Input = () => {
 
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile ] = useState(null);
+  const filePickerRef = useRef();
 
-  //TODO: fix scrollbar
+  const addImageToPost = () => {}
+
 
   return (
     <div
-      className={`border-b border-gray-700 p-3 flex space-x-3`}
+      className={`border-b border-gray-700 p-5 flex space-x-3`}
     >
       <img
         src='https://i.imgur.com/dAdnl2y.png'
@@ -18,7 +23,7 @@ const Input = () => {
         className="h-11 w-11 rounded-full cursor-pointer"
       />
 
-      <div className='w-full divide-y-2 divide-gray-700'>
+      <div className='w-full  divide-y-2 divide-gray-700'>
         {/* Message Input */}
         <div className={``}>
           <textarea
@@ -51,8 +56,16 @@ const Input = () => {
         {/*Image Input*/}
         <div className='flex items-center justify-between pt-2.5'>
           <div className='flex items-center'>
-            <div className='icon'>
+            <div className='icon'
+              onClick={() => filePickerRef.current.click()}
+            >
               <PhotoIcon className='h-[22px] text-[#1d9bf0]'/>
+              <input
+                type='file'
+                hidden
+                onChange={addImageToPost}
+                ref={filePickerRef}
+              />
             </div>
           </div>
         </div>

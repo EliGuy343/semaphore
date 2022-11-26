@@ -27,7 +27,7 @@ const Sidebar = () => {
           color='white'
         />
       </div>
-      <div className="space-y-3 mt-4 mb-2.5 ml-6 xl:ml-24">
+      <div className="space-y-3 mt-4 mb-2.5 xl:ml-24">
         <SidebarLink text='home' Icon={HomeIcon} />
         <SidebarLink text='explore' Icon={HashtagIcon} />
         <SidebarLink text='Notifications' Icon={BellIcon} />
@@ -43,7 +43,7 @@ const Sidebar = () => {
           Signal
         </button>
         <div
-          className="text-[#d9d9d9] flex items-center justify-center
+          className="text-[#d9d9d9] flex items-center justify-center ml-3
             mt-auto hoverAnimation xl:ml-auto xl:mr-5"
         >
           <img
