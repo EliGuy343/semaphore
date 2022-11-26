@@ -1,6 +1,12 @@
 //TODO: fix scrollbar
 
-import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  CalendarIcon,
+  ChartBarIcon,
+  FaceSmileIcon,
+  PhotoIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { useRef, useState } from 'react';
 
 
@@ -8,6 +14,7 @@ const Input = () => {
 
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile ] = useState(null);
+  const [showEmojis, setShowEmojis] = useState(false);
   const filePickerRef = useRef();
 
   const addImageToPost = () => {}
@@ -56,7 +63,8 @@ const Input = () => {
         {/*Image Input*/}
         <div className='flex items-center justify-between pt-2.5'>
           <div className='flex items-center'>
-            <div className='icon'
+            <div
+              className='icon'
               onClick={() => filePickerRef.current.click()}
             >
               <PhotoIcon className='h-[22px] text-[#1d9bf0]'/>
@@ -66,6 +74,18 @@ const Input = () => {
                 onChange={addImageToPost}
                 ref={filePickerRef}
               />
+            </div>
+            <div className='icon'>
+              <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
+            </div>
+            <div
+              className='icon'
+              onClick={() => setShowEmojis(!showEmojis)}
+            >
+              <FaceSmileIcon className='h-[22px] text-[#1d9bf0]'/>
+            </div>
+            <div className='icon'>
+              <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
             </div>
           </div>
         </div>
