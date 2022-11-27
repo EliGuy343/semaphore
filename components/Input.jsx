@@ -74,7 +74,8 @@ const Input = () => {
 
   return (
     <div
-      className={`border-b border-gray-700 p-5 flex space-x-3`}
+      className={`border-b border-gray-700 p-5 flex space-x-3 ${loading &&
+        'opacity-60'}`}
     >
       <img
         src='https://i.imgur.com/dAdnl2y.png'
@@ -114,62 +115,62 @@ const Input = () => {
             </div>
           )}
         </div>
-
-        {/*Image Input*/}
-        <div className='flex items-center justify-between pt-2.5'>
-          <div className='flex items-center'>
-            <div
-              className='icon'
-              onClick={() => filePickerRef.current.click()}
-            >
-              <PhotoIcon className='h-[22px] text-[#1d9bf0]'/>
-              <input
-                type='file'
-                hidden
-                onChange={addImageToPost}
-                ref={filePickerRef}
-              />
-            </div>
-
-            {/* Other Inputs */}
-            <div className='icon'>
-              <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
-            </div>
-            <div
-              className='icon'
-              onClick={() => setShowEmojis(!showEmojis)}
-            >
-              <FaceSmileIcon className='h-[22px] text-[#1d9bf0]'/>
-            </div>
-            <div className='icon'>
-              <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
-            </div>
-
-            {/* Emoji Menu*/}
-            {showEmojis && (
+        {!loading &&
+          <div className='flex items-center justify-between pt-2.5'>
+            <div className='flex items-center'>
               <div
-                className='absolute mt-[320px] ml-[40px] max-w-[220px]
-                  border-r-8'
+                className='icon'
+                onClick={() => filePickerRef.current.click()}
               >
-                <EmojiPicker
-                  onEmojiClick={addEmoji}
-                  theme='dark'
-                  height={320}
-                  width={320}
+                <PhotoIcon className='h-[22px] text-[#1d9bf0]'/>
+                <input
+                  type='file'
+                  hidden
+                  onChange={addImageToPost}
+                  ref={filePickerRef}
                 />
               </div>
-            )}
-          </div>
-          <button
-            className='bg-[#1d9bf0] text-white rounded-full px-4 py-1.5
-              font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0]
-              disabled:opacity-40 disabled:cursor-deafult'
-            disabled={!input.trim() && !selectedFile}
-          >
-            Signal
-          </button>
-        </div>
 
+              {/* Other Inputs */}
+              <div className='icon'>
+                <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
+              </div>
+              <div
+                className='icon'
+                onClick={() => setShowEmojis(!showEmojis)}
+              >
+                <FaceSmileIcon className='h-[22px] text-[#1d9bf0]'/>
+              </div>
+              <div className='icon'>
+                <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
+              </div>
+
+              {/* Emoji Menu*/}
+              {showEmojis && (
+                <div
+                  className='absolute mt-[320px] ml-[40px] max-w-[220px]
+                    border-r-8'
+                >
+                  <EmojiPicker
+                    onEmojiClick={addEmoji}
+                    theme='dark'
+                    height={320}
+                    width={320}
+                  />
+                </div>
+              )}
+            </div>
+            <button
+              className='bg-[#1d9bf0] text-white rounded-full px-4 py-1.5
+                font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0]
+                disabled:opacity-40 disabled:cursor-deafult'
+              disabled={!input.trim() && !selectedFile}
+              onClick={sendPost}
+            >
+              Signal
+            </button>
+          </div>
+        }
       </div>
     </div>
   )
