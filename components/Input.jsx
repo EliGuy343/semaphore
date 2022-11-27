@@ -16,7 +16,14 @@ const Input = () => {
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile ] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
+  const [loading, setLoading] = useState(false);
   const filePickerRef = useRef();
+
+  const sendPost = () => {
+    if(loading) return;
+    setLoading(true);
+
+  }
 
   const addEmoji = (emojiObject, event) => {
     let emoji = String.fromCodePoint(`0x${emojiObject.unified}`);
