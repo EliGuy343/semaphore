@@ -18,7 +18,7 @@ const Sidebar = () => {
     >
       <div
         className="flex items-center justify-center w-14 h-14 hoverAnimation
-          p-0 xl:ml-24"
+          p-0 sm:mr-[15px] xl:mr-0 xl:ml-24"
       >
         <Image
           src='https://i.imgur.com/6jy6tPw.png'

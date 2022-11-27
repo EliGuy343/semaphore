@@ -17,6 +17,7 @@ const Input = () => {
   const [selectedFile, setSelectedFile ] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const filePickerRef = useRef();
+
   const addEmoji = (emojiObject, event) => {
     let emoji = String.fromCodePoint(`0x${emojiObject.unified}`);
     setInput(input+emoji);
@@ -36,8 +37,9 @@ const Input = () => {
       />
 
       <div className='w-full  divide-y-2 divide-gray-700'>
+
         {/* Message Input */}
-        <div className={``}>
+        <div className={`${selectedFile && "pb-7"} ${input && 'space-y-2.5'}`}>
           <textarea
             value={input}
             placeholder='signal your status...'
@@ -46,6 +48,7 @@ const Input = () => {
               text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]'
             onChange={(e) => setInput(e.target.value)}
           />
+
           {/* uploaded Image display */}
           {selectedFile && (
             <div className='relative'>
@@ -65,6 +68,7 @@ const Input = () => {
             </div>
           )}
         </div>
+
         {/*Image Input*/}
         <div className='flex items-center justify-between pt-2.5'>
           <div className='flex items-center'>
@@ -80,6 +84,8 @@ const Input = () => {
                 ref={filePickerRef}
               />
             </div>
+
+            {/* Other Inputs */}
             <div className='icon'>
               <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
             </div>
@@ -92,6 +98,8 @@ const Input = () => {
             <div className='icon'>
               <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
             </div>
+
+            {/* Emoji Menu*/}
             {showEmojis && (
               <div
                 className='absolute mt-[320px] ml-[40px] max-w-[220px]
@@ -105,8 +113,15 @@ const Input = () => {
                 />
               </div>
             )}
-
           </div>
+          <button
+            className='bg-[#1d9bf0] text-white rounded-full px-4 py-1.5
+              font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0]
+              disabled:opacity-40 disabled:cursor-deafult'
+            disabled={!input.trim() && !selectedFile}
+          >
+            Signal
+          </button>
         </div>
 
       </div>
