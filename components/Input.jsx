@@ -18,9 +18,10 @@ import {
   updateDoc,
 } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { useSession } from 'next-auth/react';
 
 const Input = () => {
-
+  const {data: session} = useSession();
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile ] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
@@ -32,10 +33,10 @@ const Input = () => {
     setLoading(true);
 
     const docRef = await addDoc(collection(db, 'posts'), {
-      // id: session.uid,
-      // username: session.user.name,
-      // userImg: session.user.image,
-      // tag: session.user.tag,
+      id: session.user.uid,
+      username: session.user.name,
+      userImg: session.user.image,
+      tag: session.user.tag,
       text: input,
       timestamp: serverTimestamp()
     });
@@ -78,7 +79,7 @@ const Input = () => {
         'opacity-60'}`}
     >
       <img
-        src='https://i.imgur.com/dAdnl2y.png'
+        src={session.user.image}
         alt='profile pic'
         className="h-11 w-11 rounded-full cursor-pointer"
       />

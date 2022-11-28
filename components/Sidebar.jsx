@@ -15,9 +15,6 @@ import { signOut, useSession } from "next-auth/react";
 const Sidebar = () => {
 
   const {data: session } = useSession();
-  if(session) {
-    console.log(session.user);
-  }
   return (
     <div
       className="hidden sm:flex flex-col items-center xl:items-start
