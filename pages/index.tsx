@@ -1,10 +1,11 @@
+//TODO: fix avatar image when user doesn't have avatar
+
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import Login from '../components/Login';
-
 import {getProviders, getSession, useSession } from 'next-auth/react';
 
 const Home = ({trendingResults, followResults, providers}) => {
@@ -67,8 +68,8 @@ export async function getServerSideProps(context) {
     props:{
       trendingResults,
       followResults,
-      providers
-      //session
+      providers,
+      session
     }
   }
 }

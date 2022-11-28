@@ -10,7 +10,14 @@ import {
   ListBulletIcon,
   EllipsisHorizontalIcon
 } from '@heroicons/react/24/outline'
+import { signOut, useSession } from "next-auth/react";
+
 const Sidebar = () => {
+
+  const {data: session } = useSession();
+  if(session) {
+    console.log(session.user);
+  }
   return (
     <div
       className="hidden sm:flex flex-col items-center xl:items-start
@@ -45,15 +52,16 @@ const Sidebar = () => {
         <div
           className="text-[#d9d9d9] flex items-center justify-center ml-3
             mt-auto hoverAnimation xl:ml-auto xl:mr-5"
+            onClick={signOut}
         >
           <img
-            src='https://i.imgur.com/dAdnl2y.png'
+            src={session.user.image}
             alt='profile pic'
             className="h-10 w-10 rounded-full sm:ml-4 xl:mr-2.5"
           />
           <div className="hidden xl:inline leading-5">
-            <h4 className="font-bold">firebase 1478</h4>
-            <p className="text-[#6e767d]">@firebase1875</p>
+            <h4 className="font-bold">{session.user.name}</h4>
+            <p className="text-[#6e767d]">{session.user.tag}</p>
           </div>
           <EllipsisHorizontalIcon className="h-5 xl:inline ml-10" />
         </div>
