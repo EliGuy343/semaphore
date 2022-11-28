@@ -34,6 +34,10 @@ const Post = ({id, post, postPage}) => {
               </span>
             </div>
             {' '}⬩{' '}
+            <span className="hover:underline text-sm sm:text-[15px]">
+                {/*< Moment /> */}
+            </span>
+            {!postPage && <p className="text-[#d9d9d9]">{post?.text}</p>}
           </div>
         </div>
       </div>
