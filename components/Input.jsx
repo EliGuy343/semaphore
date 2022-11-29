@@ -27,6 +27,7 @@ const Input = () => {
   const [showEmojis, setShowEmojis] = useState(false);
   const [loading, setLoading] = useState(false);
   const filePickerRef = useRef();
+  console.log(session.user)
 
   const sendPost = async () => {
     if(loading) return;
