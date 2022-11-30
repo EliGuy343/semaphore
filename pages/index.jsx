@@ -1,17 +1,20 @@
 //TODO: fix avatar image when user doesn't have avatar
 
-import type { NextPage } from 'next'
+
 import Head from 'next/head'
 import Image from 'next/image'
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import Login from '../components/Login';
 import {getProviders, getSession, useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
+import Modal from '../components/Modal';
 
 const Home = ({trendingResults, followResults, providers}) => {
   const {data: session } = useSession();
+  const isOpen = useSelector((state) => { return state.modalState });
 
-    if(!session) return <Login providers={providers}/>
+  if(!session) return <Login providers={providers}/>
   return (
     <div className=''>
       <Head>
@@ -21,6 +24,7 @@ const Home = ({trendingResults, followResults, providers}) => {
       <main className='bg-black min-h-screen flex justify-start max-w-[1500px] mx-auto'>
         <Sidebar/>
         <Feed/>
+        {isOpen && <Modal/>}
       </main>
     </div>
   )

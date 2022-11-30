@@ -8,6 +8,7 @@
   "dependencies": {
     "@emoji-mart/data": "^1.0.8",
     "@emoji-mart/react": "^1.0.1",
+    "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@reduxjs/toolkit": "^1.9.1",
     "emoji-mart": "^5.3.3",
