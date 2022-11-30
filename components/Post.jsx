@@ -19,15 +19,14 @@ import {
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 const Post = ({id, post, postPage}) => {
   const [comments, setComments ] = useState([]);
   const {data: session} = useSession();
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-  const router = useRouter()
-  console.log(post)
-  console.log(session.user)
+  const router = useRouter();
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-700">
       {!postPage && (
