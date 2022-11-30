@@ -7,6 +7,7 @@ import {
   SwitchHorizontalIcon,
   TrashIcon
 } from "@heroicons/react/24/outline"
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import {
   collection,
   deleteDoc,
@@ -16,7 +17,7 @@ import {
   query,
   setDoc,
 } from "@firebase/firestore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -36,17 +37,32 @@ const Post = ({id, post, postPage}) => {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modalState);
   const postIdState = useSelector((state) => state.postIdState);
-  const likePost = async () => {
-    if(liked) {
-      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
-    }
-    else {
-      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid),{
-        username: session.user.name,
 
-      })
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [db, id]
+  );
+
+  useEffect(
+    () =>
+      setLiked(
+        likes.findIndex((like) => like.id === session?.user?.uid) !== -1
+      ),
+    [likes]
+  );
+
+  const likePost = async () => {
+    if (liked) {
+      await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
+    } else {
+      await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+        username: session.user.name,
+      });
     }
-  }
+  };
 
   const router = useRouter();
 
@@ -163,7 +179,7 @@ const Post = ({id, post, postPage}) => {
           >
             <div className="icon group-hover:bg-pink-600/10">
               {liked ? (
-                <HeartIconFilled className="h-5 text-pink-600" />
+                <HeartIconSolid className="h-5 text-pink-600" />
               ) : (
                 <HeartIcon className="h-5 group-hover:text-pink-600" />
               )}
