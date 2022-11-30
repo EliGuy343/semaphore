@@ -6,16 +6,18 @@ const modalSlice = createSlice({
   reducers: {
     setModalState(state, action) {
       state = action.payload
+      return state;
     }
   }
 });
 
 const postIdSlice = createSlice({
   name:'postIdState',
-  initialState: false,
+  initialState: "",
   reducers: {
     setPostId(state, action) {
-      state = action.payload;
+       state = action.payload;
+       return state;
     }
   }
 });

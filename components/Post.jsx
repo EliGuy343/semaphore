@@ -19,16 +19,28 @@ import {
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setPostId,  setModalState } from '../store';
+import Moment from 'react-moment';
 
 const Post = ({id, post, postPage}) => {
-  const [comments, setComments ] = useState([]);
   const {data: session} = useSession();
+
+  const [comments, setComments ] = useState([]);
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
+
+  const dispatch = useDispatch();
+  const modalState = useSelector((state) => state.modalState);
+  const postIdState = useSelector((state) => state.postIdState);
+
   const router = useRouter();
+
   return (
-    <div className="p-3 flex cursor-pointer border-b border-gray-700">
+    <div
+      className="p-3 flex cursor-pointer border-b border-gray-700"
+      // onClick={() => router.push(`/${id}`)}
+    >
       {!postPage && (
         <img
           src={post?.userImg}
@@ -95,8 +107,8 @@ const Post = ({id, post, postPage}) => {
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
-              setPostId(id);
-              setIsOpen(true);
+              dispatch(setPostId(id));
+              dispatch(setModalState(true));
             }}
           >
             <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
@@ -128,7 +140,7 @@ const Post = ({id, post, postPage}) => {
               </div>
             </div>
           )}
-          <div
+          {/* <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
@@ -151,7 +163,7 @@ const Post = ({id, post, postPage}) => {
                 {likes.length}
               </span>
             )}
-          </div>
+          </div> */}
 
           <div className="icon group">
             <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
