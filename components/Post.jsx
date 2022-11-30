@@ -22,6 +22,9 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { setPostId,  setModalState } from '../store';
 import Moment from 'react-moment';
+import {db} from '../firebase';
+
+//TODO: "are you sure you want to delete post?" window
 
 const Post = ({id, post, postPage}) => {
   const {data: session} = useSession();
@@ -39,7 +42,7 @@ const Post = ({id, post, postPage}) => {
   return (
     <div
       className="p-3 flex cursor-pointer border-b border-gray-700"
-      // onClick={() => router.push(`/${id}`)}
+      onClick={() => router.push(`/${id}`)}
     >
       {!postPage && (
         <img
@@ -140,7 +143,7 @@ const Post = ({id, post, postPage}) => {
               </div>
             </div>
           )}
-          {/* <div
+          <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
@@ -163,7 +166,7 @@ const Post = ({id, post, postPage}) => {
                 {likes.length}
               </span>
             )}
-          </div> */}
+          </div>
 
           <div className="icon group">
             <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
