@@ -36,6 +36,17 @@ const Post = ({id, post, postPage}) => {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modalState);
   const postIdState = useSelector((state) => state.postIdState);
+  const likePost = async () => {
+    if(liked) {
+      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+    }
+    else {
+      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid),{
+        username: session.user.name,
+
+      })
+    }
+  }
 
   const router = useRouter();
 
@@ -78,7 +89,7 @@ const Post = ({id, post, postPage}) => {
             </div>
             {' '}⬩{' '}
             <span className="hover:underline text-sm sm:text-[15px]">
-                {/*< Moment /> */}
+                <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
             </span>
             {!postPage &&
               <p className="text-[#d9d9d9]">
