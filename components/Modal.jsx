@@ -45,7 +45,22 @@ const Modal = () => {
     setComment((comment) => comment+emoji);
   }
 
-  const sendComment = () => {}
+  const sendComment = async (e) => {
+    e.preventDefault();
+
+    await addDoc(collection(db, 'posts', postId,"comments"), {
+      comment: comment,
+      username: session.user.name,
+      tag: session.user.tag,
+      userImg: session.user.image,
+      timestamp: serverTimestamp()
+    })
+
+    setIsOpen();
+    setComment("");
+
+    //router.push();
+  }
 
   useEffect(
     () =>{
@@ -160,11 +175,12 @@ const Modal = () => {
                         <div
                           className="flex items-center"
                         >
-                          <div className="icon">
+                          {/*TODO: Add Photos to comments */}
+                          {/* <div className="icon">
                             <PhotoIcon
                               className="text-[#1d9bf0] h-[22px]"
                             />
-                          </div>
+                          </div> */}
                           <div className="icon rotate-90">
                             <ChartBarIcon
                               className="text-[#1d9bf0] h-[22px]"

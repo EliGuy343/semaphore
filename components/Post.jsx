@@ -29,7 +29,6 @@ import {db} from '../firebase';
 
 const Post = ({id, post, postPage}) => {
   const {data: session} = useSession();
-
   const [comments, setComments ] = useState([]);
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
