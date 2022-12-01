@@ -20,20 +20,31 @@ import { useRouter } from "next/router";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalState} from "../store";
+import EmojiPicker from "emoji-picker-react";
 
 
 const Modal = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const isOpen = useSelector((state) => state.modalState);
   const postId = useSelector((state) => state.postIdState);
+
+  const [post, setPost] = useState(null);
+  const [comment, setComment] = useState("");
+  const [showEmojis, setShowEmojis] = useState(false);
+
   const setIsOpen = () => {
     dispatch(setModalState(!isOpen));
   }
-  const [post, setPost] = useState(null);
-  const [comment, setComment] = useState("");
-  const router = useRouter();
+
+  const addEmoji = (emojiObject, event) => {
+    console.log(emojiObject);
+    let emoji = String.fromCodePoint(`0x${emojiObject.unified}`);
+    setComment((comment) => comment+emoji);
+  }
+
   const sendComment = () => {}
 
   useEffect(
@@ -72,7 +83,7 @@ const Modal = () => {
           >
             <div
               className="inline-block align-bottom bg-black rounded-2xl
-                text-left overflow-hidden shadow-xl transform transition-all
+                text-left  shadow-xl transform transition-all
                 sm:my-8 sm:align-middle sm:max-w-xl sm:w-full"
             >
               <div
@@ -159,11 +170,27 @@ const Modal = () => {
                               className="text-[#1d9bf0] h-[22px]"
                             />
                           </div>
-                          <div className="icon">
+                          <div
+                            className="icon"
+                            onClick={() => setShowEmojis((state) => !state)}
+                          >
                           <FaceSmileIcon
                             className='text-[#1d9bf0] h-[22px]'
                           />
                           </div>
+                          {showEmojis && (
+                            <div
+                              className='absolute mt-[320px] ml-[40px] max-w-[220px]
+                                border-r-8'
+                            >
+                              <EmojiPicker
+                                onEmojiClick={addEmoji}
+                                theme='dark'
+                                height={320}
+                                width={320}
+                              />
+                            </div>
+                          )}
                           <div className="icon">
                             <CalendarIcon
                               className="text-[#1d9bf0] h-[22px]"
