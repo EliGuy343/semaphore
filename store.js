@@ -16,8 +16,8 @@ const postIdSlice = createSlice({
   initialState: "",
   reducers: {
     setPostId(state, action) {
-       state = action.payload;
-       return state;
+      state = action.payload;
+      return state;
     }
   }
 });
