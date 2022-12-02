@@ -3,7 +3,6 @@ import Input from './Input';
 import { useEffect, useRef, useState } from "react";
 import { onSnapshot, collection, query, orderBy, endAt, limit, getDocs, startAt} from "firebase/firestore";
 import { db } from '../firebase';
-import { useSession } from "next-auth/react";
 import Post from './Post';
 import {useInView } from 'react-intersection-observer';
 
@@ -66,16 +65,6 @@ const Feed = () => {
         ))}
       </div>
       <div ref={scrollRef}></div>
-      {/* <div
-        className="flex items-center  px-[250px] py-[10px]"
-      >
-        <button
-          className="inline ml-auto bg-[#1d9bf0] text-white
-          rounded-full w-56 h-[52px] text-lg shadow-md hover:bg-[#1a8cd8] "
-        >
-          More Posts
-        </button>
-      </div> */}
     </div>
   )
 }

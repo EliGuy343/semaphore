@@ -1,5 +1,4 @@
 //TODO: fix avatar image when user doesn't have avatar
-//TODO: Pagination!!!!
 
 import Head from 'next/head'
 import Image from 'next/image'
