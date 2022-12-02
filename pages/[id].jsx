@@ -17,15 +17,18 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
 
-//TODO: Loading screen...
 
 const PostPage = ({trendingResults, followResults, providers}) => {
+
+  //TODO: fix Weird gap in name
+
   const router = useRouter();
   const {data: session} = useSession();
   const isOpen = useSelector((state) => { return state.modalState });
   const { id } = router.query;
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState(null);
+  const [comments, setCommments] = useState([]);
 
   useEffect(() => {
     return onSnapshot(doc(db, "posts", id), (snapshot) => {
@@ -33,6 +36,17 @@ const PostPage = ({trendingResults, followResults, providers}) => {
       setLoading(false);
     });
   }, [db])
+
+  useEffect(() =>
+    onSnapshot(
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => setCommments(snapshot.docs)
+    ),
+    [db, id]
+  );
 
   if(!session) return <Login providers={providers}/>
 
@@ -79,6 +93,17 @@ const PostPage = ({trendingResults, followResults, providers}) => {
             </div>
             )
           }
+          {comments.length > 0 && (
+            <div className="ph-72">
+              {/*commments.map((commment) => (
+                <Comment
+                  key={comment.id}
+                  id={comment.id}
+                  comment={comment.data()}
+                />
+              )) */}
+            </div>
+          )}
         </div>
         <Sidebar/>
         {isOpen && <Modal/>}
