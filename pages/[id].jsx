@@ -17,17 +17,22 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
 
+//TODO: Loading screen...
+
 const PostPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
   const {data: session} = useSession();
   const isOpen = useSelector((state) => { return state.modalState });
   const { id } = router.query;
-
+  const [loading, setLoading] = useState(true)
   const [post, setPost] = useState(null);
 
-  useEffect(() => onSnapshot(doc(db, "posts", id), (snapshot) => {
-    setPost(snapshot.data());
-  }), [db])
+  useEffect(() => {
+    return onSnapshot(doc(db, "posts", id), (snapshot) => {
+      setPost(snapshot.data());
+      setLoading(false);
+    });
+  }, [db])
 
   if(!session) return <Login providers={providers}/>
 
@@ -63,13 +68,13 @@ const PostPage = ({trendingResults, followResults, providers}) => {
             (
               <Post id={id} post={post} postPage/>
             )
-            :(
+            :(!loading &&
             <div
               className=" flex text-white justify-center text-center
                 px-1.5 py-2"
             >
               <h2 className="font-bold text-[20px]">
-                We are sorry, but the post doesn't exist anymore.
+                We are sorry, but this post doesn't exist anymore.
               </h2>
             </div>
             )
