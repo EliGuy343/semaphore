@@ -21,8 +21,6 @@ import Comment from "../components/Comment";
 
 const PostPage = ({trendingResults, followResults, providers}) => {
 
-  //TODO: fix Weird gap in name
-
   const router = useRouter();
   const {data: session} = useSession();
   const isOpen = useSelector((state) => { return state.modalState });

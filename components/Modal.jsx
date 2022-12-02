@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalState} from "../store";
 import EmojiPicker from "emoji-picker-react";
 
-
+//TODO: Display other comments here
 const Modal = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch();

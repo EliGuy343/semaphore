@@ -1,4 +1,3 @@
-//TODO: fix scrollbar
 
 import {
   CalendarIcon,
