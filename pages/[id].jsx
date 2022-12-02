@@ -16,6 +16,7 @@ import {db } from '../firebase';
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
+import Comment from "../components/Comment";
 
 
 const PostPage = ({trendingResults, followResults, providers}) => {
@@ -95,13 +96,13 @@ const PostPage = ({trendingResults, followResults, providers}) => {
           }
           {comments.length > 0 && (
             <div className="ph-72">
-              {/*commments.map((commment) => (
+              {comments.map((comment) => (
                 <Comment
                   key={comment.id}
                   id={comment.id}
                   comment={comment.data()}
                 />
-              )) */}
+              ))}
             </div>
           )}
         </div>

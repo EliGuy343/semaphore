@@ -144,7 +144,7 @@ const Post = ({id, post, postPage}) => {
             className={`text-[#6e767d] flex justify-between w-10/12
               ${postPage && 'mx-auto'}`}
           >
-            <div
+          <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
