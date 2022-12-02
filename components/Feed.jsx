@@ -1,22 +1,46 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
 import Input from './Input';
-import { useEffect, useState } from "react";
-import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
+import { onSnapshot, collection, query, orderBy, endAt, limit, getDocs, startAt} from "firebase/firestore";
 import { db } from '../firebase';
 import { useSession } from "next-auth/react";
 import Post from './Post';
+import {useInView } from 'react-intersection-observer';
+
+const initalPostsLimit = 3;
+
 const Feed = () => {
+  const {ref: scrollRef, inView: myElementIsVisible } = useInView();
+  const [lim, setLim] = useState(initalPostsLimit);
   const [posts, setPosts] = useState([]);
 
-  useEffect(
-    ()=> onSnapshot(
-      query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
+  useEffect(()=>{
+    onSnapshot(
+      query(collection(db, 'posts'), orderBy('timestamp', 'desc'), limit(lim)),
         (snapshot) => {
-          setPosts(snapshot.docs);
+          if(!myElementIsVisible || lim == initalPostsLimit){
+            setPosts(snapshot.docs);
+            setLim(lim+initalPostsLimit);
+          }
         }
       )
-    ,[db]
-  );
+    },[db]);
+
+    useEffect(() =>{
+      if(myElementIsVisible && lim > 0) {
+        console.log(lim);
+        const q = query(
+          collection(db, 'posts'),
+          orderBy('timestamp', 'desc'),
+          limit(lim),
+        )
+        getDocs(q).then((result) => {
+          console.log(result)
+          setPosts(result.docs);
+          setLim((lim) => lim+initalPostsLimit);
+        })
+      }
+    }, [db, myElementIsVisible]);
 
   return (
     <div
@@ -25,7 +49,7 @@ const Feed = () => {
     >
       <div
         className="text-[#d9d9d9] flex items-center sm:justify-between
-          py-2 px-3 sticky top-0 z-50 bg-black border-b border-gray-700"
+          py-2 px-2 sticky top-0 z-50 bg-black border-b border-gray-700"
       >
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div
@@ -36,11 +60,22 @@ const Feed = () => {
         </div>
       </div>
       <Input />
-      <div className="pb-72">
-        {posts.map(post => (
+      <div className="pb-52">
+        {posts?.map(post => (
           <Post key={post.id} id={post.id} post={post.data()} />
         ))}
       </div>
+      <div ref={scrollRef}></div>
+      {/* <div
+        className="flex items-center  px-[250px] py-[10px]"
+      >
+        <button
+          className="inline ml-auto bg-[#1d9bf0] text-white
+          rounded-full w-56 h-[52px] text-lg shadow-md hover:bg-[#1a8cd8] "
+        >
+          More Posts
+        </button>
+      </div> */}
     </div>
   )
 }
