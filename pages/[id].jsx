@@ -17,6 +17,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
 import Comment from "../components/Comment";
+import Widgets from '../components/Widgets';
 
 
 const PostPage = ({trendingResults, followResults, providers}) => {
@@ -105,6 +106,10 @@ const PostPage = ({trendingResults, followResults, providers}) => {
           )}
         </div>
         <Sidebar/>
+        <Widgets
+          trendingResults={trendingResults}
+          followResults={followResults}
+        />
         {isOpen && <Modal/>}
       </main>
     </div>
@@ -113,7 +118,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
 
 export async function getServerSideProps(context) {
 
-  const trendingResults = JSON.stringify([
+  const trendingResults = [
     {
       "heading":"T20 World Cup 2021 · LIVE",
       "description":"NZvAUS: New Zealand and Australia clash in the T20 World Cup final",
@@ -130,8 +135,8 @@ export async function getServerSideProps(context) {
       "description":"tubbo and quackity","img":"",
       "tags":["QUACKITY AND TUBBO,"]
     }
-  ]);
-  const followResults = JSON.stringify([
+  ];
+  const followResults = [
     {
       "userImg":"https://rb.gy/urakiy",
       "username":"SpaceX","tag":"@SpaceX"
@@ -146,7 +151,7 @@ export async function getServerSideProps(context) {
       "username":"Tesla",
       "tag":"@Tesla"
     }
-  ]);
+  ];
   const providers = await getProviders();
   const session = await getSession(context);
   return {

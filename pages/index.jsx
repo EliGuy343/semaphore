@@ -1,5 +1,5 @@
 //TODO: fix avatar image when user doesn't have avatar
-
+//TODO: Pagination!!!!
 
 import Head from 'next/head'
 import Image from 'next/image'
@@ -9,6 +9,7 @@ import Login from '../components/Login';
 import {getProviders, getSession, useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import Modal from '../components/Modal';
+import Widgets from '../components/Widgets';
 
 const Home = ({trendingResults, followResults, providers}) => {
   const {data: session } = useSession();
@@ -24,6 +25,10 @@ const Home = ({trendingResults, followResults, providers}) => {
       <main className='bg-black min-h-screen flex justify-start max-w-[1500px] mx-auto'>
         <Sidebar/>
         <Feed/>
+        <Widgets
+          trendingResults={trendingResults}
+          followResults={followResults}
+        />
         {isOpen && <Modal/>}
       </main>
     </div>
@@ -32,7 +37,7 @@ const Home = ({trendingResults, followResults, providers}) => {
 
 export async function getServerSideProps(context) {
 
-  const trendingResults = JSON.stringify([
+  const trendingResults = [
     {
       "heading":"T20 World Cup 2021 · LIVE",
       "description":"NZvAUS: New Zealand and Australia clash in the T20 World Cup final",
@@ -49,8 +54,8 @@ export async function getServerSideProps(context) {
       "description":"tubbo and quackity","img":"",
       "tags":["QUACKITY AND TUBBO,"]
     }
-  ]);
-  const followResults = JSON.stringify([
+  ];
+  const followResults =[
     {
       "userImg":"https://rb.gy/urakiy",
       "username":"SpaceX","tag":"@SpaceX"
@@ -65,7 +70,7 @@ export async function getServerSideProps(context) {
       "username":"Tesla",
       "tag":"@Tesla"
     }
-  ]);
+  ];
   const providers = await getProviders();
   const session = await getSession(context);
   return {

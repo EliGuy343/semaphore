@@ -4,7 +4,6 @@ import {
   ChatBubbleLeftIcon,
   HeartIcon,
   ShareIcon,
-  SwitchHorizontalIcon,
   TrashIcon
 } from "@heroicons/react/24/outline"
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
