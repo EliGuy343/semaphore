@@ -4,14 +4,21 @@ import {
   TrashIcon
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
+import {
+  doc,
+  collection,
+  deleteDoc,
+} from "@firebase/firestore";
+import { db } from "../firebase";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+
 import Moment from "react-moment"
 
-//TODO: delete comments
+
 //TODO: like comments
 
-const Comment = ({id, comment}) => {
+const Comment = ({id, comment, postId}) => {
   const {data: session} = useSession();
 
   const [liked, setLiked] = useState(false);
@@ -62,17 +69,21 @@ const Comment = ({id, comment}) => {
             className="rounded-2xl max-h-[700px] object-cover mr-2"
           />
         </div>
-        {session.user.uid === comment?.id && (
-          <div
-            className="flex items-center space-x-1 group"
-            onClick={(e) => {}}
-          >
-            <div className="icon text-[#565656] group-hover:bg-red-600/10">
-              <TrashIcon className="h-5 group-hover:text-red-600" />
+        <div className="flex flex-row space-x-[55px] justify-start">
+          {session.user.uid === comment?.id && (
+            <div
+              className="flex items-center space-x-1 group"
+              onClick={(e) => {
+                e.preventDefault();
+                deleteDoc(doc(collection(db, 'posts', postId,"comments"), id));
+              }}
+            >
+              <div className="icon text-[#565656] group-hover:bg-red-600/10">
+                <TrashIcon className="h-5 group-hover:text-red-600" />
+              </div>
             </div>
-          </div>
-        )}
-        <div
+          )}
+          <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               setLiked((like) => !like)
@@ -95,6 +106,7 @@ const Comment = ({id, comment}) => {
               </span>
             )}
           </div>
+        </div>
       </div>
     </div>
   )

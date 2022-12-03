@@ -48,6 +48,7 @@ const Modal = () => {
     e.preventDefault();
 
     await addDoc(collection(db, 'posts', postId,"comments"), {
+      id:session.user.uid,
       comment: comment,
       username: session.user.name,
       tag: session.user.tag,

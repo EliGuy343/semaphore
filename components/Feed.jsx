@@ -22,7 +22,6 @@ const Feed = () => {
     );
     return onSnapshot(q, (snapshot) => {
       if(!myElementIsVisible || lim == initalPostsLimit) {
-        console.log('in')
         setPosts(snapshot.docs);
         if(lim == initalPostsLimit) setLim(lim+initalPostsLimit);
       }

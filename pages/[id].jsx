@@ -103,6 +103,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
                 <Comment
                   key={comment.id}
                   id={comment.id}
+                  postId={id}
                   comment={comment.data()}
                 />
               ))}
