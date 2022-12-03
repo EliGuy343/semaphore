@@ -25,10 +25,11 @@ const Comment = ({id, comment, postId}) => {
   const [likes, setLikes] = useState([]);
 
   useEffect(
-    () =>onSnapshot(
-      collection(db, "posts", postId, "comments",id, "likes"),
-        (snapshot) => setLikes(snapshot.docs)
-      ),
+    () =>
+      onSnapshot(
+        collection(db, "posts", postId, "comments",id, "likes"),
+          (snapshot) => setLikes(snapshot.docs)
+        ),
     [db, id]
   );
 

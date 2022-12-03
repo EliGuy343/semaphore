@@ -1,7 +1,7 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
 import Input from './Input';
 import { useEffect, useState } from "react";
-import { onSnapshot, collection, query, orderBy, endAt, limit, getDocs, startAt} from "firebase/firestore";
+import { onSnapshot, collection, query, orderBy,limit, getDocs} from "firebase/firestore";
 import { db } from '../firebase';
 import Post from './Post';
 import {useInView } from 'react-intersection-observer';
