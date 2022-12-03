@@ -44,9 +44,9 @@ export async function getServerSideProps(context) {
       "tags":["#WorldCupFinal, ","Kane Williamson"]
     },
     {
-      "heading":"Trending in United Arab Emirates","description":"#earthquake",
+      "heading":"Trending in UK","description":"#earthquake",
       "img":"https://rb.gy/jvuy4v",
-      "tags":["#DubaiAirshow, ","#gessdubai"]
+      "tags":["#Airshow, ","#earthquake"]
     },
     {
       "heading":"Trending in Digital Creators",
