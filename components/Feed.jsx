@@ -1,6 +1,6 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
 import Input from './Input';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { onSnapshot, collection, query, orderBy, endAt, limit, getDocs, startAt} from "firebase/firestore";
 import { db } from '../firebase';
 import Post from './Post';
@@ -12,34 +12,50 @@ const Feed = () => {
   const {ref: scrollRef, inView: myElementIsVisible } = useInView();
   const [lim, setLim] = useState(initalPostsLimit);
   const [posts, setPosts] = useState([]);
+  const [changed, setChanged] = useState(false);
 
   useEffect(()=>{
-    onSnapshot(
-      query(collection(db, 'posts'), orderBy('timestamp', 'desc'), limit(lim)),
-        (snapshot) => {
-          if(!myElementIsVisible || lim == initalPostsLimit){
-            setPosts(snapshot.docs);
-            setLim(lim+initalPostsLimit);
-          }
-        }
-      )
-    },[db]);
+    const q = query(
+      collection(db, 'posts'),
+      orderBy('timestamp', 'desc'),
+      limit(lim)
+    );
+    return onSnapshot(q, (snapshot) => {
+      if(!myElementIsVisible || lim == initalPostsLimit) {
+        console.log('in')
+        setPosts(snapshot.docs);
+        if(lim == initalPostsLimit) setLim(lim+initalPostsLimit);
+      }
+    });
+  },[db]);
 
     useEffect(() =>{
-      if(myElementIsVisible && lim > 0) {
-        console.log(lim);
+      if(myElementIsVisible && lim > 3) {
         const q = query(
           collection(db, 'posts'),
           orderBy('timestamp', 'desc'),
           limit(lim),
         )
         getDocs(q).then((result) => {
-          console.log(result)
           setPosts(result.docs);
           setLim((lim) => lim+initalPostsLimit);
         })
       }
     }, [db, myElementIsVisible]);
+
+    useEffect(() =>{
+      if(changed) {
+        const q = query(
+          collection(db, 'posts'),
+          orderBy('timestamp', 'desc'),
+          limit(lim),
+        )
+        getDocs(q).then((result) => {
+          setPosts(result.docs);
+          setChanged(false);
+        })
+      }
+    }, [changed]);
 
   return (
     <div
@@ -61,7 +77,12 @@ const Feed = () => {
       <Input />
       <div className="pb-52">
         {posts?.map(post => (
-          <Post key={post.id} id={post.id} post={post.data()} />
+          <Post
+            key={post.id}
+            id={post.id}
+            post={post.data()}
+            setChanged={setChanged}
+          />
         ))}
       </div>
       <div ref={scrollRef}></div>

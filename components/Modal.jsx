@@ -40,7 +40,6 @@ const Modal = () => {
   }
 
   const addEmoji = (emojiObject, event) => {
-    console.log(emojiObject);
     let emoji = String.fromCodePoint(`0x${emojiObject.unified}`);
     setComment((comment) => comment+emoji);
   }

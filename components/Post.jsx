@@ -26,7 +26,7 @@ import {db} from '../firebase';
 
 //TODO: "are you sure you want to delete post?" window
 
-const Post = ({id, post, postPage}) => {
+const Post = ({id, post, postPage, setChanged}) => {
   const {data: session} = useSession();
   const [comments, setComments ] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -72,6 +72,7 @@ const Post = ({id, post, postPage}) => {
         username: session.user.name,
       });
     }
+    setChanged(true);
   };
 
   const router = useRouter();
@@ -165,6 +166,7 @@ const Post = ({id, post, postPage}) => {
               className="flex items-center space-x-1 group"
               onClick={(e) => {
                 e.stopPropagation();
+                setChanged(true);
                 deleteDoc(doc(db, "posts", id));
                 router.push("/");
               }}

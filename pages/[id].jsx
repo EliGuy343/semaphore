@@ -19,7 +19,7 @@ import Login from "../components/Login";
 import Comment from "../components/Comment";
 import Widgets from '../components/Widgets';
 
-
+//TODO: Add scroll load to comments
 const PostPage = ({trendingResults, followResults, providers}) => {
 
   const router = useRouter();
@@ -29,11 +29,15 @@ const PostPage = ({trendingResults, followResults, providers}) => {
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState(null);
   const [comments, setCommments] = useState([]);
+  const [changed, setChanged] = useState(true);
 
   useEffect(() => {
     return onSnapshot(doc(db, "posts", id), (snapshot) => {
-      setPost(snapshot.data());
-      setLoading(false);
+      if(changed) {
+        setPost(snapshot.data());
+        setLoading(false);
+        setChanged(false);
+      }
     });
   }, [db])
 
@@ -80,7 +84,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
           </div>
           {post ?
             (
-              <Post id={id} post={post} postPage/>
+              <Post id={id} post={post} postPage setChanged={setChanged}/>
             )
             :(!loading &&
             <div
