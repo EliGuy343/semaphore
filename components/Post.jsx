@@ -33,8 +33,6 @@ const Post = ({id, post, postPage, setChanged}) => {
   const [liked, setLiked] = useState(false);
 
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.modalState);
-  const postIdState = useSelector((state) => state.postIdState);
 
   useEffect(() =>
     onSnapshot(
