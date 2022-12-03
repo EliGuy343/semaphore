@@ -8,21 +8,47 @@ import {
   doc,
   collection,
   deleteDoc,
+  onSnapshot,
+  setDoc,
 } from "@firebase/firestore";
 import { db } from "../firebase";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Moment from "react-moment"
 
-
-//TODO: like comments
 
 const Comment = ({id, comment, postId}) => {
   const {data: session} = useSession();
 
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+
+  useEffect(
+    () =>onSnapshot(
+      collection(db, "posts", postId, "comments",id, "likes"),
+        (snapshot) => setLikes(snapshot.docs)
+      ),
+    [db, id]
+  );
+
+  useEffect(
+    () =>
+      setLiked(
+        likes.findIndex((like) => like.id === session?.user?.uid) !== -1
+      ),
+    [likes]
+  );
+
+  const likeComment = async () => {
+    if (liked) {
+      await deleteDoc(doc(db, "posts",  postId, "comments", id,"likes", session.user.uid));
+    } else {
+      await setDoc(doc(db, "posts",  postId, "comments", id,"likes", session.user.uid), {
+        username: session.user.name,
+      });
+    }
+  };
 
   return (
     <div
@@ -69,7 +95,7 @@ const Comment = ({id, comment, postId}) => {
             className="rounded-2xl max-h-[700px] object-cover mr-2"
           />
         </div>
-        <div className="flex flex-row space-x-[55px] justify-start">
+        <div className="flex flex-row space-x-[55px] justify-start text-[#6e767d]">
           {session.user.uid === comment?.id && (
             <div
               className="flex items-center space-x-1 group"
@@ -86,7 +112,8 @@ const Comment = ({id, comment, postId}) => {
           <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
-              setLiked((like) => !like)
+              e.stopPropagation();
+              likeComment();
             }}
           >
             <div className="icon text-gray-500 group-hover:bg-pink-600/10">
