@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 import Modal from '../components/Modal';
 import Widgets from '../components/Widgets';
 
+//TODO: add modal for pictures
+
 const Home = ({trendingResults, followResults, providers}) => {
   const {data: session } = useSession();
   const isOpen = useSelector((state) => { return state.modalState });

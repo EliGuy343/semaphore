@@ -58,7 +58,7 @@ const Modal = () => {
     setIsOpen();
     setComment("");
 
-    //router.push();
+    router.push(`/${postId}`);
   }
 
   useEffect(
