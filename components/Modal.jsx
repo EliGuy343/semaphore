@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsOpen } from "../store";
 import EmojiPicker from "emoji-picker-react";
 
+const commentLimit = 1000;
+
 const Modal = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch();
@@ -169,48 +171,59 @@ const Modal = () => {
                           text-lg placeholder-gray-500 tracking-wide w-full
                           min-h-[80px]"
                       />
-                      <div className="flex items-center justify-between pt-2.5">
-                        <div
-                          className="flex items-center"
-                        >
-                          {/*TODO: Add Photos to comments */}
-                          {/* <div className="icon">
-                            <PhotoIcon
-                              className="text-[#1d9bf0] h-[22px]"
-                            />
-                          </div> */}
-                          <div className="icon rotate-90">
-                            <ChartBarIcon
-                              className="text-[#1d9bf0] h-[22px]"
-                            />
-                          </div>
-                          <div
-                            className="icon"
-                            onClick={() => setShowEmojis((state) => !state)}
+                      <div>
+                        {comment.trim() &&
+                          <h2
+                            className={`${commentLimit < comment.length ?
+                              'text-[#f20808]':
+                              'text-[#5a5858]'} ml-2`
+                            }
                           >
-                          <FaceSmileIcon
-                            className='text-[#1d9bf0] h-[22px]'
-                          />
-                          </div>
-                          {showEmojis && (
-                            <div
-                              className='absolute mt-[320px] ml-[40px] max-w-[220px]
-                                border-r-8'
-                            >
-                              <EmojiPicker
-                                onEmojiClick={addEmoji}
-                                theme='dark'
-                                height={320}
-                                width={320}
+                            {commentLimit - comment.length} characters remaining
+                          </h2>
+                        }
+                        <div className="flex items-center justify-between pt-2.5">
+                          <div
+                            className="flex items-center"
+                          >
+                            {/*TODO: Add Photos to comments */}
+                            {/* <div className="icon">
+                              <PhotoIcon
+                                className="text-[#1d9bf0] h-[22px]"
+                              />
+                            </div> */}
+                            <div className="icon rotate-90">
+                              <ChartBarIcon
+                                className="text-[#1d9bf0] h-[22px]"
                               />
                             </div>
-                          )}
-                          <div className="icon">
-                            <CalendarIcon
-                              className="text-[#1d9bf0] h-[22px]"
+                            <div
+                              className="icon"
+                              onClick={() => setShowEmojis((state) => !state)}
+                            >
+                            <FaceSmileIcon
+                              className='text-[#1d9bf0] h-[22px]'
                             />
+                            </div>
+                            {showEmojis && (
+                              <div
+                                className='absolute mt-[320px] ml-[40px] max-w-[220px]
+                                  border-r-8'
+                              >
+                                <EmojiPicker
+                                  onEmojiClick={addEmoji}
+                                  theme='dark'
+                                  height={320}
+                                  width={320}
+                                />
+                              </div>
+                            )}
+                            <div className="icon">
+                              <CalendarIcon
+                                className="text-[#1d9bf0] h-[22px]"
+                              />
+                            </div>
                           </div>
-                        </div>
                           <button
                             className="bg-[#1d9bf0] text-white  rounded-full
                               px-4 py-1.5 font-bold shadow-md
@@ -218,10 +231,11 @@ const Modal = () => {
                               disabled:opacity-50"
                               type="submit"
                               onClick={sendComment}
-                              disabled={!comment.trim()}
+                              disabled={!comment.trim() || commentLimit < comment.length}
                           >
                             Signal
                           </button>
+                        </div>
                       </div>
                     </div>
                   </div>

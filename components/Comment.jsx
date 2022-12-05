@@ -89,7 +89,7 @@ const Comment = ({id, comment, postId}) => {
               className="h-5 text-[#6e767d] group-hover:text=[#1d9bf0]"
             />
           </div>
-          {/*image for when, the reply img feature will be ready */}
+          {/*image for when, the reply with img feature will be ready */}
           <img
             src={comment?.image}
             alt=""

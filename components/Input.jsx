@@ -122,8 +122,8 @@ const Input = () => {
         {!loading &&
           <div>
            {input.trim() &&
-            <h2 className={`m-[2px] ${input.length > inputLimit ? 'text-[#f20808]' : 'text-[#5a5858]' }`}>
-                Characters Remaining {inputLimit - input.length}
+              <h2 className={`m-[2px] ${input.length > inputLimit ? 'text-[#f20808]' : 'text-[#5a5858]' }`}>
+                {inputLimit - input.length}  Characters Remaining
               </h2>
             }
             <div className='flex items-center justify-between pt-2.5'>
