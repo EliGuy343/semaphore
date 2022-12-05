@@ -18,6 +18,7 @@ import Head from "next/head";
 import Login from "../components/Login";
 import Comment from "../components/Comment";
 import Widgets from '../components/Widgets';
+import PhotoModal from "../components/PhotoModal";
 
 //TODO: Add scroll load to comments
 const PostPage = ({trendingResults, followResults, providers}) => {
@@ -25,6 +26,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
   const {data: session} = useSession();
   const isOpen = useSelector((state) => { return state.modalState });
+  const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
   const { id } = router.query;
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState(null);
@@ -115,6 +117,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
           trendingResults={trendingResults}
           followResults={followResults}
         />
+        {isPhotoModalOpen && <PhotoModal/>}
         {isOpen && <Modal/>}
       </main>
     </div>

@@ -115,42 +115,42 @@ const Modal = () => {
               <div className="flex px-4 pt-5 pb-2.5 sm:px-6">
                 <div className="w-full">
                   <div className="text-[#6e767d] flex gap-x-3 relative">
-                  <span
+                    <span
                       className="w-0.5 h-full z-[-1] absolute
                         left-5 top-11 bg-gray-600"
                     >
                     </span>
-                      <img
-                        src={post?.userImg}
-                        alt=""
-                        className="h-11 w-11 rounded-full"
-                      />
-                      <div>
-                        <div className="inline-block group">
-                          <h4
-                            className="font-bold text-[15px] sm:text-base
-                              text-[#d9d9d9] inline-block group-hover:underline"
-                          >
-                            {post?.username}
-                          </h4>
-                          <span
-                            className="ml-1.5 text-sm sm:text-[15px]"
-                          >
-                            @{post?.tag}
-                          </span>
-                        </div>
-                        {' '}⬩{' '}
+                    <img
+                      src={post?.userImg}
+                      alt=""
+                      className="h-11 w-11 rounded-full"
+                    />
+                    <div>
+                      <div className="inline-block group">
+                        <h4
+                          className="font-bold text-[15px] sm:text-base
+                            text-[#d9d9d9] inline-block group-hover:underline"
+                        >
+                          {post?.username}
+                        </h4>
                         <span
-                          className="text-sm sm:text-[15px]"
+                          className="ml-1.5 text-sm sm:text-[15px]"
                         >
-                          <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
+                          @{post?.tag}
                         </span>
-                        <p
-                          className="text-[#d9d9d9] text-[15px] sm:text-base"
-                        >
-                          {post?.text}
-                        </p>
                       </div>
+                      {' '}⬩{' '}
+                      <span
+                        className="text-sm sm:text-[15px]"
+                      >
+                        <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
+                      </span>
+                      <p
+                        className="text-[#d9d9d9] text-[15px] sm:text-base"
+                      >
+                        {post?.text}
+                      </p>
+                    </div>
                   </div>
                   <div
                     className="mt-7 flex space-x-3 w-full"

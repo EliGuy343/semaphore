@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { setPostId,  setModalState } from '../store';
+import { setPostId,  setModalState, openPhoto } from '../store';
 import Moment from 'react-moment';
 import {db} from '../firebase';
 
@@ -72,6 +72,10 @@ const Post = ({id, post, postPage, setChanged}) => {
     }
     setChanged(true);
   };
+
+  const openPhotoModal = async (photoUrl) => {
+    dispatch(openPhoto({photoUrl}));
+  }
 
   const router = useRouter();
 
@@ -137,6 +141,12 @@ const Post = ({id, post, postPage, setChanged}) => {
           src={post?.image}
           alt=""
           className="rounded-2xl max-h-[700px] object-cover mr-2"
+          onClick={(e) => {
+            if(post && post.image) {
+              e.stopPropagation();
+              openPhotoModal(post.image);
+            }
+          }}
         />
         <div
           className={`text-[#6e767d] flex justify-between w-10/12
