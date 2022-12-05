@@ -21,6 +21,8 @@ import {
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { useSession } from 'next-auth/react';
 
+const inputLimit = 1000;
+
 const Input = () => {
   const {data: session} = useSession();
   const [input, setInput] = useState("");
@@ -103,8 +105,8 @@ const Input = () => {
             <div className='relative'>
               <div
                 className='absolute w-8 h-8 bg-[#15181c] hover:bg-[#272c26]
-                  bg-opacity-75 rounded-full flex items-center justify-center
-                  top-1 left-1 cursor-pointer'
+                bg-opacity-75 rounded-full flex items-center justify-center
+                top-1 left-1 cursor-pointer'
                 onClick={() => setSelectedFile(null)}
               >
                 <XMarkIcon className='text-white h-5'/>
@@ -118,59 +120,66 @@ const Input = () => {
           )}
         </div>
         {!loading &&
-          <div className='flex items-center justify-between pt-2.5'>
-            <div className='flex items-center'>
-              <div
-                className='icon'
-                onClick={() => filePickerRef.current.click()}
-              >
-                <PhotoIcon className='h-[22px] text-[#1d9bf0]'/>
-                <input
-                  type='file'
-                  hidden
-                  onChange={addImageToPost}
-                  ref={filePickerRef}
-                />
-              </div>
-
-              {/* Other Inputs */}
-              <div className='icon'>
-                <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
-              </div>
-              <div
-                className='icon'
-                onClick={() => setShowEmojis(!showEmojis)}
-              >
-                <FaceSmileIcon className='h-[22px] text-[#1d9bf0]'/>
-              </div>
-              <div className='icon'>
-                <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
-              </div>
-
-              {/* Emoji Menu*/}
-              {showEmojis && (
+          <div>
+           {input.trim() &&
+            <h2 className={`m-[2px] ${input.length > inputLimit ? 'text-[#f20808]' : 'text-[#5a5858]' }`}>
+                Characters Remaining {inputLimit - input.length}
+              </h2>
+            }
+            <div className='flex items-center justify-between pt-2.5'>
+              <div className='flex items-center'>
                 <div
-                  className='absolute mt-[320px] ml-[40px] max-w-[220px]
-                    border-r-8'
+                  className='icon'
+                  onClick={() => filePickerRef.current.click()}
                 >
-                  <EmojiPicker
-                    onEmojiClick={addEmoji}
-                    theme='dark'
-                    height={320}
-                    width={320}
+                  <PhotoIcon className='h-[22px] text-[#1d9bf0]'/>
+                  <input
+                    type='file'
+                    hidden
+                    onChange={addImageToPost}
+                    ref={filePickerRef}
                   />
                 </div>
-              )}
+
+                {/* Other Inputs */}
+                <div className='icon'>
+                  <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
+                </div>
+                <div
+                  className='icon'
+                  onClick={() => setShowEmojis(!showEmojis)}
+                >
+                  <FaceSmileIcon className='h-[22px] text-[#1d9bf0]'/>
+                </div>
+                <div className='icon'>
+                  <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
+                </div>
+
+                {/* Emoji Menu*/}
+                {showEmojis && (
+                  <div
+                    className='absolute mt-[320px] ml-[40px] max-w-[220px]
+                      border-r-8'
+                  >
+                    <EmojiPicker
+                      onEmojiClick={addEmoji}
+                      theme='dark'
+                      height={320}
+                      width={320}
+                    />
+                  </div>
+                )}
+              </div>
+              <button
+                className='bg-[#1d9bf0] text-white rounded-full px-4 py-1.5
+                  font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0]
+                  disabled:opacity-40 disabled:cursor-deafult'
+                disabled={(!input.trim() && !selectedFile) || input.length > inputLimit}
+                onClick={sendPost}
+              >
+                Signal
+              </button>
             </div>
-            <button
-              className='bg-[#1d9bf0] text-white rounded-full px-4 py-1.5
-                font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0]
-                disabled:opacity-40 disabled:cursor-deafult'
-              disabled={!input.trim() && !selectedFile}
-              onClick={sendPost}
-            >
-              Signal
-            </button>
           </div>
         }
       </div>
