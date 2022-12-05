@@ -19,8 +19,8 @@ import {
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { setPostId,  setModalState, openPhoto } from '../store';
+import { useDispatch } from "react-redux";
+import { setPostId,  setIsOpen, openPhoto } from '../store';
 import Moment from 'react-moment';
 import {db} from '../firebase';
 
@@ -157,7 +157,7 @@ const Post = ({id, post, postPage, setChanged}) => {
           onClick={(e) => {
             e.stopPropagation();
             dispatch(setPostId(id));
-            dispatch(setModalState(true));
+            dispatch(setIsOpen(true));
           }}
         >
           <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">

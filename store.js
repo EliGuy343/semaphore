@@ -1,24 +1,18 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-//TODO:Combine modalSlice and PostIdSlice
-
 const modalSlice = createSlice({
   name:'modalState',
-  initialState: false,
+  initialState: {
+    isOpen:false,
+    postId:""
+  },
   reducers: {
-    setModalState(state, action) {
-      state = action.payload
+    setIsOpen(state, action) {
+      state.isOpen = action.payload;
       return state;
-    }
-  }
-});
-
-const postIdSlice = createSlice({
-  name:'postIdState',
-  initialState: "",
-  reducers: {
+    },
     setPostId(state, action) {
-      state = action.payload;
+      state.postId = action.payload;
       return state;
     }
   }
@@ -45,14 +39,13 @@ const photoModalSlice = createSlice({
 })
 
 
-export const { setModalState } = modalSlice.actions;
-export const { setPostId } = postIdSlice.actions;
+export const { setIsOpen, setPostId } = modalSlice.actions;
+
 export const {openPhoto, closePhoto} = photoModalSlice.actions;
 
 export const store = configureStore({
   reducer: {
     modalState: modalSlice.reducer,
-    postIdState: postIdSlice.reducer,
     photoModalState: photoModalSlice.reducer
   },
 })

@@ -25,7 +25,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
 
   const router = useRouter();
   const {data: session} = useSession();
-  const isOpen = useSelector((state) => { return state.modalState });
+  const { isOpen } = useSelector((state) => { return state.modalState });
   const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
   const { id } = router.query;
   const [loading, setLoading] = useState(true)

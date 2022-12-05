@@ -19,7 +19,7 @@ import {
 import { useRouter } from "next/router";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalState} from "../store";
+import { setIsOpen } from "../store";
 import EmojiPicker from "emoji-picker-react";
 
 const Modal = () => {
@@ -27,15 +27,14 @@ const Modal = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const isOpen = useSelector((state) => state.modalState);
-  const postId = useSelector((state) => state.postIdState);
+  const {isOpen, postId} = useSelector((state) => state.modalState);
 
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
 
-  const setIsOpen = () => {
-    dispatch(setModalState(!isOpen));
+  const closeModal = () => {
+    dispatch(setIsOpen(!isOpen));
   }
 
   const addEmoji = (emojiObject, event) => {
@@ -55,7 +54,7 @@ const Modal = () => {
       timestamp: serverTimestamp()
     })
 
-    setIsOpen();
+    closeModal();
     setComment("");
 
     router.push(`/${postId}`);
@@ -66,11 +65,11 @@ const Modal = () => {
       return onSnapshot(doc(db, "posts", postId), (snapshot) => {
         setPost(snapshot.data());
       })
-    }, [db]);
+    }, [db, postId]);
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="fixed z-50 inset-0 pt-8" onClose={setIsOpen}>
+      <Dialog as="div" className="fixed z-50 inset-0 pt-8" onClose={closeModal}>
         <div className="flex items-start justify-center min-h-[800px]
           m:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
         >
@@ -107,7 +106,7 @@ const Modal = () => {
                 <div
                   className="hoverAnimation w-9 h-9 flex items-center
                     justify-center xl:px-0"
-                  onClick={setIsOpen}
+                  onClick={closeModal}
                 >
                   <XMarkIcon className="h-[22px] text-white"/>
                 </div>

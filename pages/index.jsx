@@ -10,11 +10,9 @@ import Modal from '../components/Modal';
 import Widgets from '../components/Widgets';
 import PhotoModal from "../components/PhotoModal";
 
-//TODO: add modal for pictures
-
 const Home = ({trendingResults, followResults, providers}) => {
   const {data: session } = useSession();
-  const isOpen = useSelector((state) => { return state.modalState });
+  const { isOpen } = useSelector((state) => { return state.modalState });
   const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
 
   if(!session) return <Login providers={providers}/>
