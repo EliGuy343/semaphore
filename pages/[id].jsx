@@ -22,15 +22,18 @@ import Comment from "../components/Comment";
 import Widgets from '../components/Widgets';
 import PhotoModal from "../components/PhotoModal";
 
-//TODO: Add scroll load to comments
 const initialCommentLimit = 10;
 const PostPage = ({trendingResults, followResults, providers}) => {
 
   const router = useRouter();
 
   const {data: session} = useSession();
-  const { isOpen } = useSelector((state) => { return state.modalState });
-  const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
+  const { isOpen } = useSelector((state) => {
+    return state.modalState
+  });
+  const isPhotoModalOpen = useSelector((state => {
+    return state.photoModalState.isOpen
+  }));
   const { id } = router.query;
 
   const [lim, setLim] = useState(initialCommentLimit);

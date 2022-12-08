@@ -7,6 +7,7 @@ import Post from './Post';
 import {useInView } from 'react-intersection-observer';
 
 const initalPostsLimit = 10;
+//TODO:? have the listener only tell the user, that a change is incoming but don't update.
 
 const Feed = () => {
   const {ref: scrollRef, inView: myElementIsVisible } = useInView();

@@ -1,13 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   onSnapshot,
   doc,
   addDoc,
   collection,
   serverTimestamp,
+  updateDoc,
 } from "@firebase/firestore";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { useSession } from "next-auth/react";
 import {
   CalendarIcon,
@@ -21,6 +22,7 @@ import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpen } from "../store";
 import EmojiPicker from "emoji-picker-react";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 const commentLimit = 1000;
 
@@ -34,6 +36,8 @@ const Modal = () => {
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const filePickerRef = useRef();
 
   const closeModal = () => {
     dispatch(setIsOpen(!isOpen));
@@ -44,10 +48,20 @@ const Modal = () => {
     setComment((comment) => comment+emoji);
   }
 
+  const addImageToComment = (e) => {
+    const reader = new FileReader();
+    if(e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    }
+  }
   const sendComment = async (e) => {
     e.preventDefault();
 
-    await addDoc(collection(db, 'posts', postId,"comments"), {
+    const docRef = await addDoc(collection(db, 'posts', postId,"comments"), {
       id:session.user.uid,
       comment: comment,
       username: session.user.name,
@@ -56,6 +70,15 @@ const Modal = () => {
       timestamp: serverTimestamp()
     })
 
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+    if (selectedFile) {
+      await uploadString(imageRef,selectedFile, 'data_url').then(async () => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, 'posts',postId, "comments", docRef.id), {
+          image: downloadURL
+        });
+      });
+    }
     closeModal();
     setComment("");
 
@@ -171,6 +194,23 @@ const Modal = () => {
                           text-lg placeholder-gray-500 tracking-wide w-full
                           min-h-[80px]"
                       />
+                      {selectedFile && (
+                        <div className='relative'>
+                          <div
+                            className='absolute w-8 h-8 bg-[#15181c] hover:bg-[#272c26]
+                            bg-opacity-75 rounded-full flex items-center justify-center
+                            top-1 left-1 cursor-pointer'
+                            onClick={() => setSelectedFile(null)}
+                          >
+                            <XMarkIcon className='text-white h-5'/>
+                          </div>
+                          <img
+                            src={selectedFile}
+                            alt=''
+                            className='rounded-2xl max-h-80 object-contain'
+                          />
+                        </div>
+                      )}
                       <div>
                         {comment.trim() &&
                           <h2
@@ -186,12 +226,20 @@ const Modal = () => {
                           <div
                             className="flex items-center"
                           >
-                            {/*TODO: Add Photos to comments */}
-                            {/* <div className="icon">
+                            <div
+                              className="icon"
+                              onClick={() => filePickerRef.current.click()}
+                            >
                               <PhotoIcon
                                 className="text-[#1d9bf0] h-[22px]"
                               />
-                            </div> */}
+                              <input
+                                type='file'
+                                hidden
+                                onChange={addImageToComment}
+                                ref={filePickerRef}
+                              />
+                            </div>
                             <div className="icon rotate-90">
                               <ChartBarIcon
                                 className="text-[#1d9bf0] h-[22px]"

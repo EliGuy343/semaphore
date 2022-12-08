@@ -23,7 +23,7 @@ const inputLimit = 1000;
 const Input = () => {
   const {data: session} = useSession();
   const [input, setInput] = useState("");
-  const [selectedFile, setSelectedFile ] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const [loading, setLoading] = useState(false);
   const filePickerRef = useRef();
