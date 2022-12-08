@@ -1,6 +1,3 @@
-
-//TODO: Limit the amount of characters
-
 import {
   CalendarIcon,
   ChartBarIcon,

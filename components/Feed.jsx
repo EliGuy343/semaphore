@@ -10,9 +10,15 @@ const initalPostsLimit = 3;
 
 const Feed = () => {
   const {ref: scrollRef, inView: myElementIsVisible } = useInView();
+  const [moreToLoad, setMoreToLoad] = useState(true);
   const [lim, setLim] = useState(initalPostsLimit);
+  const [visible, setVisible] = useState(true);
   const [posts, setPosts] = useState([]);
   const [changed, setChanged] = useState(false);
+
+  useEffect(() => {
+    setVisible(myElementIsVisible);
+  }, [myElementIsVisible])
 
   useEffect(()=>{
     const q = query(
@@ -21,40 +27,41 @@ const Feed = () => {
       limit(lim)
     );
     return onSnapshot(q, (snapshot) => {
-      if(!myElementIsVisible || lim == initalPostsLimit) {
+      if(posts.length < snapshot.docs.length) setMoreToLoad(true);
+      console.log(myElementIsVisible);
+      if(!visible || lim == initalPostsLimit) {
         setPosts(snapshot.docs);
         if(lim == initalPostsLimit) setLim(lim+initalPostsLimit);
       }
     });
   },[db]);
 
-    useEffect(() =>{
-      if(myElementIsVisible && lim > 3) {
-        const q = query(
-          collection(db, 'posts'),
-          orderBy('timestamp', 'desc'),
-          limit(lim),
-        )
-        getDocs(q).then((result) => {
-          setPosts(result.docs);
-          setLim((lim) => lim+initalPostsLimit);
-        })
-      }
-    }, [db, myElementIsVisible]);
+  const loadMorePosts = () => {
+    const q = query(
+      collection(db, 'posts'),
+      orderBy('timestamp', 'desc'),
+      limit(lim),
+    )
+    getDocs(q).then((result) => {
+      if(result.docs.length <= posts.length) setMoreToLoad(false)
+      setPosts(result.docs);
+      setLim((lim) => lim+initalPostsLimit);
+    })
+  }
 
-    useEffect(() =>{
-      if(changed) {
-        const q = query(
-          collection(db, 'posts'),
-          orderBy('timestamp', 'desc'),
-          limit(lim),
-        )
-        getDocs(q).then((result) => {
-          setPosts(result.docs);
-          setChanged(false);
-        })
-      }
-    }, [changed]);
+  useEffect(() =>{
+    if(changed) {
+      const q = query(
+        collection(db, 'posts'),
+        orderBy('timestamp', 'desc'),
+        limit(lim),
+      )
+      getDocs(q).then((result) => {
+        setPosts(result.docs);
+        setChanged(false);
+      })
+    }
+  }, [changed]);
 
   return (
     <div
@@ -83,8 +90,16 @@ const Feed = () => {
             setChanged={setChanged}
           />
         ))}
+        {moreToLoad && <div
+          className="p-3 flex border-b border-gray-700
+            justify-center text-center items-center cursor-pointer
+            hover:bg-[#d9d9d9] hover:bg-opacity-20"
+          onClick={loadMorePosts}
+          ref={scrollRef}
+        >
+          <span className="text-blue-400">Load more</span>
+        </div>}
       </div>
-      <div ref={scrollRef}></div>
     </div>
   )
 }
