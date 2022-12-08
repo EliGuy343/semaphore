@@ -1,6 +1,8 @@
 import {
   collection,
   doc,
+  getDocs,
+  limit,
   onSnapshot,
   orderBy,
   query
@@ -21,17 +23,24 @@ import Widgets from '../components/Widgets';
 import PhotoModal from "../components/PhotoModal";
 
 //TODO: Add scroll load to comments
+const initialCommentLimit = 10;
 const PostPage = ({trendingResults, followResults, providers}) => {
 
   const router = useRouter();
+
   const {data: session} = useSession();
   const { isOpen } = useSelector((state) => { return state.modalState });
   const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
   const { id } = router.query;
+
+  const [lim, setLim] = useState(initialCommentLimit);
+  const [moreToLoad, setMoreToLoad] = useState(true);
+
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState(null);
   const [comments, setCommments] = useState([]);
   const [changed, setChanged] = useState(true);
+  const [commmentsChanged, setCommmentsChanged] = useState(false);
 
   useEffect(() => {
     return onSnapshot(doc(db, "posts", id), (snapshot) => {
@@ -47,12 +56,54 @@ const PostPage = ({trendingResults, followResults, providers}) => {
     onSnapshot(
       query(
         collection(db, "posts", id, "comments"),
-        orderBy("timestamp", "desc")
+        orderBy("timestamp", "desc"),
+        limit(lim)
       ),
-      (snapshot) => setCommments(snapshot.docs)
+      (snapshot) => {
+        if(snapshot.docs.length >= lim){
+          setMoreToLoad(true);
+        }
+        else
+        {
+          setMoreToLoad(false);
+        }
+        setCommments(snapshot.docs);
+        setLim(lim => lim+initialCommentLimit);
+      }
     ),
     [db, id]
   );
+
+  useEffect(() =>{
+    if(changed) {
+      const q = query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc"),
+        limit(lim),
+      )
+      getDocs(q).then((result) => {
+        setCommments(result.docs);
+        setCommmentsChanged(false);
+      })
+    }
+  }, [commmentsChanged]);
+
+  const loadMoreComments = () => {
+    const q = query(
+      collection(db, "posts", id, "comments"),
+      orderBy("timestamp", "desc"),
+      limit(lim)
+    );
+
+    getDocs(q).then((result) => {
+        if(result.docs.length <= lim) {
+          setMoreToLoad(false);
+        }
+        setCommments(result.docs);
+        setLim(lim => lim+initialCommentLimit);
+      }
+    )
+  }
 
   if(!session) return <Login providers={providers}/>
 
@@ -107,8 +158,17 @@ const PostPage = ({trendingResults, followResults, providers}) => {
                   id={comment.id}
                   postId={id}
                   comment={comment.data()}
+                  setCommmentsChanged={setCommmentsChanged}
                 />
               ))}
+              {moreToLoad && <div
+                className="p-3 flex border-b border-gray-700
+                  justify-center text-center items-center cursor-pointer
+                  hover:bg-[#d9d9d9] hover:bg-opacity-20"
+                onClick={() => loadMoreComments()}
+              >
+                <span className="text-blue-400">Load more</span>
+              </div>}
             </div>
           )}
         </div>

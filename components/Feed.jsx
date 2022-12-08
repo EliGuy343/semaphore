@@ -6,7 +6,7 @@ import { db } from '../firebase';
 import Post from './Post';
 import {useInView } from 'react-intersection-observer';
 
-const initalPostsLimit = 3;
+const initalPostsLimit = 10;
 
 const Feed = () => {
   const {ref: scrollRef, inView: myElementIsVisible } = useInView();
@@ -28,7 +28,6 @@ const Feed = () => {
     );
     return onSnapshot(q, (snapshot) => {
       if(posts.length < snapshot.docs.length) setMoreToLoad(true);
-      console.log(myElementIsVisible);
       if(!visible || lim == initalPostsLimit) {
         setPosts(snapshot.docs);
         if(lim == initalPostsLimit) setLim(lim+initalPostsLimit);

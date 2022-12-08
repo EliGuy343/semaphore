@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import Moment from "react-moment"
 
 
-const Comment = ({id, comment, postId}) => {
+const Comment = ({id, comment, postId, setCommmentsChanged}) => {
   const {data: session} = useSession();
 
   const [liked, setLiked] = useState(false);
@@ -49,6 +49,7 @@ const Comment = ({id, comment, postId}) => {
         username: session.user.name,
       });
     }
+    setCommmentsChanged(true);
   };
 
   return (
@@ -103,6 +104,7 @@ const Comment = ({id, comment, postId}) => {
               onClick={(e) => {
                 e.preventDefault();
                 deleteDoc(doc(collection(db, 'posts', postId,"comments"), id));
+                setCommmentsChanged(true);
               }}
             >
               <div className="icon text-[#565656] group-hover:bg-red-600/10">
