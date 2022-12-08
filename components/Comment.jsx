@@ -83,7 +83,12 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
             </span>
             <p className="text-[#d9d9d9]">
                 {comment?.comment}
-              </p>
+            </p>
+            <img
+              src={comment?.image}
+              alt=""
+              className="rounded-2xl max-h-[700px] object-cover mr-2"
+            />
           </div>
           <div className="icon group flex-shrink-0 ml-auto">
             <EllipsisHorizontalIcon
@@ -91,11 +96,6 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
             />
           </div>
           {/*image for when, the reply with img feature will be ready */}
-          <img
-            src={comment?.image}
-            alt=""
-            className="rounded-2xl max-h-[700px] object-cover mr-2"
-          />
         </div>
         <div className="flex flex-row space-x-[55px] justify-start text-[#6e767d]">
           {session.user.uid === comment?.id && (
