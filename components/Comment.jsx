@@ -16,10 +16,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import Moment from "react-moment"
+import { useDispatch } from "react-redux";
+import { openPhoto } from "../store";
 
 
 const Comment = ({id, comment, postId, setCommmentsChanged}) => {
   const {data: session} = useSession();
+  const dispatch = useDispatch();
 
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
@@ -40,6 +43,11 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
       ),
     [likes]
   );
+
+  const openPhotoModal = (photoUrl) => {
+    console.log(photoUrl);
+    dispatch(openPhoto({photoUrl}));
+  }
 
   const likeComment = async () => {
     if (liked) {
@@ -87,7 +95,13 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
             <img
               src={comment?.image}
               alt=""
-              className="rounded-2xl max-h-[700px] object-cover mr-2"
+              className="rounded-2xl max-h-[700px] object-cover mr-2 mt-2"
+              onClick={(e) => {
+                if(comment && comment.image) {
+                  e.stopPropagation();
+                  openPhotoModal(comment?.image);
+                }
+              }}
             />
           </div>
           <div className="icon group flex-shrink-0 ml-auto">

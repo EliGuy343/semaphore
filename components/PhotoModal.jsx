@@ -1,23 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment} from "react";
 import {
-  onSnapshot,
-  doc,
-  addDoc,
-  collection,
-  serverTimestamp,
-} from "@firebase/firestore";
-import { db } from "../firebase";
-import { useSession } from "next-auth/react";
-import {
-  CalendarIcon,
-  ChartBarIcon,
-  FaceSmileIcon,
-  PhotoIcon,
   XMarkIcon
 } from "@heroicons/react/24/outline";
-import { useRouter } from "next/router";
-import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import {closePhoto} from "../store";
 
