@@ -4,22 +4,15 @@ import { useEffect, useState } from "react";
 import { onSnapshot, collection, query, orderBy,limit, getDocs} from "firebase/firestore";
 import { db } from '../firebase';
 import Post from './Post';
-import {useInView } from 'react-intersection-observer';
 
 const initalPostsLimit = 10;
 //TODO:? have the listener only tell the user, that a change is incoming but don't update.
 
 const Feed = () => {
-  const {ref: scrollRef, inView: myElementIsVisible } = useInView();
   const [moreToLoad, setMoreToLoad] = useState(true);
   const [lim, setLim] = useState(initalPostsLimit);
-  const [visible, setVisible] = useState(true);
   const [posts, setPosts] = useState([]);
   const [changed, setChanged] = useState(false);
-
-  useEffect(() => {
-    setVisible(myElementIsVisible);
-  }, [myElementIsVisible])
 
   useEffect(()=>{
     const q = query(
@@ -29,10 +22,8 @@ const Feed = () => {
     );
     return onSnapshot(q, (snapshot) => {
       if(posts.length < snapshot.docs.length) setMoreToLoad(true);
-      if(!visible || lim == initalPostsLimit) {
         setPosts(snapshot.docs);
         if(lim == initalPostsLimit) setLim(lim+initalPostsLimit);
-      }
     });
   },[db]);
 
@@ -95,7 +86,6 @@ const Feed = () => {
             justify-center text-center items-center cursor-pointer
             hover:bg-[#d9d9d9] hover:bg-opacity-20"
           onClick={loadMorePosts}
-          ref={scrollRef}
         >
           <span className="text-blue-400">Load more</span>
         </div>}
