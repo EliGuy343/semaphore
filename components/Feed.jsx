@@ -5,14 +5,29 @@ import { onSnapshot, collection, query, orderBy,limit, getDocs} from "firebase/f
 import { db } from '../firebase';
 import Post from './Post';
 
-const initalPostsLimit = 10;
-//TODO:? have the listener only tell the user, that a change is incoming but don't update.
+const initalPostsLimit = 5;
 
 const Feed = () => {
   const [moreToLoad, setMoreToLoad] = useState(true);
   const [lim, setLim] = useState(initalPostsLimit);
   const [posts, setPosts] = useState([]);
+  const [updatePosts, setUpdatePosts] = useState([]);
   const [changed, setChanged] = useState(false);
+  const [newerPostsNotification, setNewerPostsNotification] = useState(false);
+
+  useEffect(() => {
+    loadMorePosts();
+  },[])
+
+  useEffect(() => {
+    if(posts.length !== updatePosts.length || updatePosts[0]?.id !== posts[0]?.id) {
+      setNewerPostsNotification(true);
+    }
+    else {
+      setNewerPostsNotification(false);
+    }
+  }, [updatePosts]);
+
 
   useEffect(()=>{
     const q = query(
@@ -21,24 +36,9 @@ const Feed = () => {
       limit(lim)
     );
     return onSnapshot(q, (snapshot) => {
-      if(posts.length < snapshot.docs.length) setMoreToLoad(true);
-        setPosts(snapshot.docs);
-        if(lim == initalPostsLimit) setLim(lim+initalPostsLimit);
+      setUpdatePosts(snapshot.docs);
     });
   },[db]);
-
-  const loadMorePosts = () => {
-    const q = query(
-      collection(db, 'posts'),
-      orderBy('timestamp', 'desc'),
-      limit(lim),
-    )
-    getDocs(q).then((result) => {
-      if(result.docs.length <= posts.length) setMoreToLoad(false)
-      setPosts(result.docs);
-      setLim((lim) => lim+initalPostsLimit);
-    })
-  }
 
   useEffect(() =>{
     if(changed) {
@@ -53,6 +53,24 @@ const Feed = () => {
       })
     }
   }, [changed]);
+
+  const loadMorePosts = () => {
+    const q = query(
+      collection(db, 'posts'),
+      orderBy('timestamp', 'desc'),
+      limit(lim),
+    )
+    getDocs(q).then((result) => {
+      if(result.docs.length <= posts.length) setMoreToLoad(false)
+      setPosts(result.docs);
+      setLim((lim) => lim+initalPostsLimit);
+    })
+  }
+
+  const LoadNewerPosts = () => {
+    setPosts(updatePosts);
+    setNewerPostsNotification(false);
+  }
 
   return (
     <div
@@ -73,6 +91,14 @@ const Feed = () => {
       </div>
       <Input />
       <div className="pb-52">
+      {newerPostsNotification && <div
+          className="p-3 flex border-b border-gray-700
+            justify-center text-center items-center cursor-pointer
+            hover:bg-[#d9d9d9] hover:bg-opacity-20"
+          onClick={LoadNewerPosts}
+        >
+          <span className="text-blue-400">Load Newer Posts</span>
+        </div>}
         {posts?.map(post => (
           <Post
             key={post.id}
