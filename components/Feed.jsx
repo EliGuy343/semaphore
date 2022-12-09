@@ -68,7 +68,28 @@ const Feed = () => {
   }
 
   const LoadNewerPosts = () => {
-    setPosts(updatePosts);
+    setPosts(posts => {
+      let i = 0;
+      let j = 0;
+      while(i < posts.length && j < updatePosts.length) {
+        if(posts[i].id !== updatePosts[j].id) {
+          if(posts[i].data().timestamp.seconds < updatePosts[j].data().timestamp.seconds) {
+            posts.unshift(updatePosts[j])
+            i++;
+            j++;
+          }
+          else {
+            posts.splice(i,1);
+          }
+        }
+        else {
+          i++;
+          j++;
+        }
+      }
+      console.log(updatePosts[0].data().timestamp);
+      return posts;
+    });
     setNewerPostsNotification(false);
   }
 
