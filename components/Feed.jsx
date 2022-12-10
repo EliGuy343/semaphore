@@ -1,7 +1,14 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
 import Input from './Input';
 import { useEffect, useState } from "react";
-import { onSnapshot, collection, query, orderBy,limit, getDocs} from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  query,
+  orderBy,
+  limit,
+  getDocs
+} from "firebase/firestore";
 import { db } from '../firebase';
 import Post from './Post';
 
@@ -15,12 +22,21 @@ const Feed = () => {
   const [changed, setChanged] = useState(false);
   const [newerPostsNotification, setNewerPostsNotification] = useState(false);
 
+  const queryForUpdate = query(
+    collection(db, 'posts'),
+    orderBy('timestamp', 'desc'),
+    limit(lim)
+  );
+
   useEffect(() => {
     loadMorePosts();
   },[])
 
   useEffect(() => {
-    if(posts.length !== updatePosts.length || updatePosts[0]?.id !== posts[0]?.id) {
+    if(
+      posts.length !== updatePosts.length
+      || updatePosts[0]?.id !== posts[0]?.id
+    ) {
       setNewerPostsNotification(true);
     }
     else {
@@ -28,26 +44,20 @@ const Feed = () => {
     }
   }, [updatePosts]);
 
-
   useEffect(()=>{
-    const q = query(
+    const queryForNotifications = query(
       collection(db, 'posts'),
       orderBy('timestamp', 'desc'),
       limit(lim)
     );
-    return onSnapshot(q, (snapshot) => {
+    return onSnapshot(queryForNotifications, (snapshot) => {
       setUpdatePosts(snapshot.docs);
     });
   },[db]);
 
   useEffect(() =>{
     if(changed) {
-      const q = query(
-        collection(db, 'posts'),
-        orderBy('timestamp', 'desc'),
-        limit(lim),
-      )
-      getDocs(q).then((result) => {
+      getDocs(queryForUpdate).then((result) => {
         setPosts(result.docs);
         setChanged(false);
       })
@@ -55,12 +65,7 @@ const Feed = () => {
   }, [changed]);
 
   const loadMorePosts = () => {
-    const q = query(
-      collection(db, 'posts'),
-      orderBy('timestamp', 'desc'),
-      limit(lim),
-    )
-    getDocs(q).then((result) => {
+    getDocs(queryForUpdate).then((result) => {
       if(result.docs.length <= posts.length) setMoreToLoad(false)
       setPosts(result.docs);
       setLim((lim) => lim+initalPostsLimit);
@@ -73,7 +78,10 @@ const Feed = () => {
       let j = 0;
       while(i < posts.length && j < updatePosts.length) {
         if(posts[i].id !== updatePosts[j].id) {
-          if(posts[i].data().timestamp.seconds < updatePosts[j].data().timestamp.seconds) {
+          if(
+            posts[i].data().timestamp.seconds
+            < updatePosts[j].data().timestamp.seconds
+          ) {
             posts.unshift(updatePosts[j])
             i++;
             j++;

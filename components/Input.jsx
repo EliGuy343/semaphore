@@ -119,7 +119,12 @@ const Input = () => {
         {!loading &&
           <div>
            {input.trim() &&
-              <h2 className={`m-[2px] ${input.length > inputLimit ? 'text-[#f20808]' : 'text-[#5a5858]' }`}>
+              <h2
+                className={`m-[2px] ${input.length > inputLimit
+                  ? 'text-[#f20808]'
+                  :'text-[#5a5858]'
+                }`}
+              >
                 {inputLimit - input.length}  Characters Remaining
               </h2>
             }
@@ -169,9 +174,13 @@ const Input = () => {
               </div>
               <button
                 className='bg-[#1d9bf0] text-white rounded-full px-4 py-1.5
-                  font-bold shadow-md hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0]
-                  disabled:opacity-40 disabled:cursor-deafult'
-                disabled={(!input.trim() && !selectedFile) || input.length > inputLimit}
+                  font-bold shadow-md hover:bg-[#1a8cd8]
+                  disabled:hover:bg-[#1d9bf0] disabled:opacity-40
+                  disabled:cursor-deafult'
+                disabled={
+                  (!input.trim() && !selectedFile)
+                  || input.length > inputLimit
+                }
                 onClick={sendPost}
               >
                 Signal

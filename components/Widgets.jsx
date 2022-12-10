@@ -15,7 +15,10 @@ const Widgets = ({trendingResults, followResults}) => {
         >
           <MagnifyingGlassIcon className="text-gray-500 h-5 z-50"/>
           <input
-            className="bg-transparent placeholder-gray-500 outline-none text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent w-full focus:border-[#1d9bf0] rounded-full focus:bg-black focus:shadow-lg"
+            className="bg-transparent placeholder-gray-500 outline-none
+              text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent
+              w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
+              focus:shadow-lg"
             placeholder="Search for what you need"
           />
         </div>
