@@ -75,16 +75,14 @@ const Feed = () => {
   const LoadNewerPosts = () => {
     setPosts(posts => {
       let i = 0;
-      let j = 0;
-      while(i < posts.length && j < updatePosts.length) {
-        if(posts[i].id !== updatePosts[j].id) {
+      while(i < posts.length && i < updatePosts.length) {
+        if(posts[i].id !== updatePosts[i].id) {
           if(
             posts[i].data().timestamp.seconds
-            < updatePosts[j].data().timestamp.seconds
+            < updatePosts[i].data().timestamp.seconds
           ) {
-            posts.unshift(updatePosts[j])
+            posts.unshift(updatePosts[i])
             i++;
-            j++;
           }
           else {
             posts.splice(i,1);
@@ -92,7 +90,6 @@ const Feed = () => {
         }
         else {
           i++;
-          j++;
         }
       }
       console.log(updatePosts[0].data().timestamp);

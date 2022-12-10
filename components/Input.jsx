@@ -85,8 +85,6 @@ const Input = () => {
       />
 
       <div className='w-full  divide-y-2 divide-gray-700'>
-
-        {/* Message Input */}
         <div className={`${selectedFile && "pb-7"} ${input && 'space-y-2.5'}`}>
           <textarea
             value={input}
@@ -96,8 +94,6 @@ const Input = () => {
               text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]'
             onChange={(e) => setInput(e.target.value)}
           />
-
-          {/* uploaded Image display */}
           {selectedFile && (
             <div className='relative'>
               <div
@@ -142,8 +138,6 @@ const Input = () => {
                     ref={filePickerRef}
                   />
                 </div>
-
-                {/* Other Inputs */}
                 <div className='icon'>
                   <ChartBarIcon className='h-[22px] text-[#1d9bf0]'/>
                 </div>
@@ -156,8 +150,6 @@ const Input = () => {
                 <div className='icon'>
                   <CalendarIcon className='h-[22px] text-[#1d9bf0]'/>
                 </div>
-
-                {/* Emoji Menu*/}
                 {showEmojis && (
                   <div
                     className='absolute mt-[320px] ml-[40px] max-w-[220px]

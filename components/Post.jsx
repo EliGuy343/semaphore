@@ -24,8 +24,6 @@ import { setPostId,  setIsOpen, openPhoto } from '../store';
 import Moment from 'react-moment';
 import {db} from '../firebase';
 
-//TODO: "are you sure you want to delete post?" window
-
 const Post = ({id, post, postPage, setChanged}) => {
   const {data: session} = useSession();
   const [comments, setComments ] = useState([]);
