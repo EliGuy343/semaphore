@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Trending from "./Trending";
-const Widgets = ({trendingResults, followResults}) => {
+const Widgets = ({trendingResults}) => {
   return (
     <div
       className="hidden lg:inline ml-8 xl:w-[450px]

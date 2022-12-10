@@ -10,7 +10,7 @@ import Modal from '../components/Modal';
 import Widgets from '../components/Widgets';
 import PhotoModal from "../components/PhotoModal";
 
-const Home = ({trendingResults, followResults, providers}) => {
+const Home = ({trendingResults, providers}) => {
   const {data: session } = useSession();
   const { isOpen } = useSelector((state) => { return state.modalState });
   const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
@@ -27,7 +27,6 @@ const Home = ({trendingResults, followResults, providers}) => {
         <Feed/>
         <Widgets
           trendingResults={trendingResults}
-          followResults={followResults}
         />
         {isOpen && <Modal/>}
         {isPhotoModalOpen && <PhotoModal/>}
@@ -56,28 +55,11 @@ export async function getServerSideProps(context) {
       "tags":["QUACKITY AND TUBBO,"]
     }
   ];
-  const followResults =[
-    {
-      "userImg":"https://rb.gy/urakiy",
-      "username":"SpaceX","tag":"@SpaceX"
-    },
-    {
-      "userImg":"https://rb.gy/aluxgh",
-      "username":"Elon Musk",
-      "tag":"@elonmusk"
-    },
-    {
-      "userImg":"https://rb.gy/zyvazm",
-      "username":"Tesla",
-      "tag":"@Tesla"
-    }
-  ];
   const providers = await getProviders();
   const session = await getSession(context);
   return {
     props:{
       trendingResults,
-      followResults,
       providers,
       session
     }

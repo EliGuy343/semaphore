@@ -92,7 +92,6 @@ const Feed = () => {
           i++;
         }
       }
-      console.log(updatePosts[0].data().timestamp);
       return posts;
     });
     setNewerPostsNotification(false);

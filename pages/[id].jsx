@@ -178,7 +178,6 @@ const PostPage = ({trendingResults, followResults, providers}) => {
         <Sidebar/>
         <Widgets
           trendingResults={trendingResults}
-          followResults={followResults}
         />
         {isPhotoModalOpen && <PhotoModal/>}
         {isOpen && <Modal/>}
@@ -207,28 +206,11 @@ export async function getServerSideProps(context) {
       "tags":["QUACKITY AND TUBBO,"]
     }
   ];
-  const followResults = [
-    {
-      "userImg":"https://rb.gy/urakiy",
-      "username":"SpaceX","tag":"@SpaceX"
-    },
-    {
-      "userImg":"https://rb.gy/aluxgh",
-      "username":"Elon Musk",
-      "tag":"@elonmusk"
-    },
-    {
-      "userImg":"https://rb.gy/zyvazm",
-      "username":"Tesla",
-      "tag":"@Tesla"
-    }
-  ];
   const providers = await getProviders();
   const session = await getSession(context);
   return {
     props:{
       trendingResults,
-      followResults,
       providers,
       session
     }
