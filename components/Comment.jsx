@@ -85,7 +85,7 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
                 @{comment?.tag}{" "}
               </span>
             </div>
-            {' '}⬩{' '}
+            {" "}⬩{" "}
             <span className="hover:underline text-sm sm:text-[15px]">
                 <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </span>

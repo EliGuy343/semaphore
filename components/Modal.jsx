@@ -163,7 +163,7 @@ const Modal = () => {
                           @{post?.tag}
                         </span>
                       </div>
-                      {' '}⬩{' '}
+                      {" "}⬩{" "}
                       <span
                         className="text-sm sm:text-[15px]"
                       >

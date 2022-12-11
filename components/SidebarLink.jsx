@@ -6,8 +6,8 @@ const SidebarLink = ({Icon, text, active}) => {
         ${active && 'font-bold'}`
       }
     >
-      <Icon className='h-7'/>
-      <span className='hidden xl:inline'>{text}</span>
+      <Icon className="h-7"/>
+      <span className="hidden xl:inline">{text}</span>
     </div>
   )
 }

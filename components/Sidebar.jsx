@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SidebarLink from './SidebarLink';
+import SidebarLink from "./SidebarLink";
 import {
   HomeIcon,
   HashtagIcon,
@@ -9,7 +9,7 @@ import {
   UserIcon,
   ListBulletIcon,
   EllipsisHorizontalIcon
-} from '@heroicons/react/24/outline'
+} from "@heroicons/react/24/outline"
 import { signOut, useSession } from "next-auth/react";
 
 const Sidebar = () => {
@@ -25,24 +25,24 @@ const Sidebar = () => {
           p-0 sm:mr-[15px] xl:mr-0 xl:ml-24"
       >
         <Image
-          src='https://i.imgur.com/6jy6tPw.png'
+          src="https://i.imgur.com/6jy6tPw.png"
           width={30}
           height={30}
-          color='white'
+          color="white"
         />
       </div>
       <div className="space-y-3 mt-4 mb-2.5 xl:ml-24">
-        <SidebarLink text='home' Icon={HomeIcon} />
-        <SidebarLink text='explore' Icon={HashtagIcon} />
-        <SidebarLink text='Notifications' Icon={BellIcon} />
-        <SidebarLink text='Inbox' Icon={InboxIcon} />
-        <SidebarLink text='Bookmarks' Icon={BookmarkIcon} />
-        <SidebarLink text='User Settings' Icon={UserIcon} />
-        <SidebarLink text='Lists' Icon={ListBulletIcon} />
-        <SidebarLink text='More' Icon={EllipsisHorizontalIcon} />
+        <SidebarLink text="home" Icon={HomeIcon} />
+        <SidebarLink text="explore" Icon={HashtagIcon} />
+        <SidebarLink text="Notifications" Icon={BellIcon} />
+        <SidebarLink text="Inbox" Icon={InboxIcon} />
+        <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
+        <SidebarLink text="User Settings" Icon={UserIcon} />
+        <SidebarLink text="Lists" Icon={ListBulletIcon} />
+        <SidebarLink text="More" Icon={EllipsisHorizontalIcon} />
         <button
-          className='hidden xl:inline ml-auto bg-[#1d9bf0] text-white
-            rounded-full w-56 h-[52px] text-lg shadow-md hover:bg-[#1a8cd8]'
+          className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white
+            rounded-full w-56 h-[52px] text-lg shadow-md hover:bg-[#1a8cd8]"
         >
           Signal
         </button>
@@ -53,7 +53,7 @@ const Sidebar = () => {
         >
           <img
             src={session.user.image}
-            alt='profile pic'
+            alt="profile pic"
             className="h-10 w-10 rounded-full sm:ml-4 xl:mr-2.5"
           />
           <div className="hidden xl:inline leading-5">
