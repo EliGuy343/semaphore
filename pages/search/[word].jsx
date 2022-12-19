@@ -12,15 +12,15 @@ import {getProviders, getSession, useSession } from 'next-auth/react';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Modal from "../components/Modal";
-import Sidebar from "../components/Sidebar";
-import Post from "../components/Post";
-import {db } from '../firebase';
+import Modal from "../../components/Modal"
+import Sidebar from "../../components/Sidebar";
+import Post from "../../components/Post";
+import {db } from '../../firebase';
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
-import Login from "../components/Login";
-import Widgets from '../components/Widgets';
-import PhotoModal from "../components/PhotoModal";
+import Login from "../../components/Login";
+import Widgets from '../../components/Widgets';
+import PhotoModal from "../../components/PhotoModal";
 
 const InitialbufferLimit = 100;
 const initialFeedLimit = 50;
