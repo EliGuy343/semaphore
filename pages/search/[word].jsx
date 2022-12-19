@@ -22,6 +22,7 @@ import Login from "../../components/Login";
 import Widgets from '../../components/Widgets';
 import PhotoModal from "../../components/PhotoModal";
 
+
 const InitialbufferLimit = 100;
 const initialFeedLimit = 50;
 
@@ -31,7 +32,7 @@ const SearchPage = ({}) => {
   const {data: session} = useSession();
   const [bufferLimit, setBufferLimit ] = useState(InitialbufferLimit);
   const [feedLimit, setFeedLimit]  = useState(initialFeedLimit);
-  const [buffer, setBuffer] = useState([]);
+  const [postBuffer, setPostBuffer] = useState([]);
   const [posts, setPosts] = useState([]);
   const [changed, setChanged] = useState(false);
 
@@ -42,16 +43,35 @@ const SearchPage = ({}) => {
     return state.photoModalState.isOpen
   }));
   const { word } = router.query;
+  console.log(posts);
 
-  const InitialQuery = query(
-    collection(db, 'posts'),
-    orderBy('timestamp', 'desc'),
-    limit(bufferLimit),
-  );
+  useEffect(() => {
+    getDocs(query(
+      collection(db, 'posts'),
+      orderBy('timestamp', 'desc'),
+      limit(bufferLimit),
+    )).then(result => {
+      setPostBuffer(result.docs)
+      console.log(postBuffer)
+    });
+  }, [])
+
+  useEffect(() => {
+  const newPosts = [];
+  console.log(postBuffer)
+  for(let i = 0; i < postBuffer.length; i++) {
+    if(postBuffer[i].data().text.includes(word)){
+      newPosts.push(postBuffer[i]);
+    }
+  }
+  setPosts(newPosts);
+ }, [postBuffer])
+
+ return (<div>
+  test
+ </div>)
 
 }
-
-
 export async function getServerSideProps(context) {
 
   const trendingResults = [
