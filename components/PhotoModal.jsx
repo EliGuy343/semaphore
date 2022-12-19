@@ -63,7 +63,7 @@ const  PhotoModal = () => {
                 </h2>
               </div>
               <div className="flex px-4 pb-2.5">
-                <div className="w-full max-h-[450px] l:max-h[750px] overflow-scroll">
+                <div className="w-full max-w-[500px] max-h-[500px] l:max-w-[750px] l:max-h[750px] overflow-scroll">
                   <div className="text-[#6e767d] flex gap-x-3 relative ">
                     <img
                       src={photoUrl}
