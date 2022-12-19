@@ -60,6 +60,7 @@ const Modal = () => {
   }
   const sendComment = async (e) => {
     e.preventDefault();
+    if(comment.length > commentLimit) return;
 
     const docRef = await addDoc(collection(db, 'posts', postId,"comments"), {
       id:session.user.uid,

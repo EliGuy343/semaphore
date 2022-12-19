@@ -29,7 +29,7 @@ const Input = () => {
   const filePickerRef = useRef();
 
   const sendPost = async () => {
-    if(loading) return;
+    if(loading || input.length > inputLimit) return;
     setLoading(true);
 
     const docRef = await addDoc(collection(db, 'posts'), {
