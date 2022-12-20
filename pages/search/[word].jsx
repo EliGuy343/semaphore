@@ -21,14 +21,22 @@ import Head from "next/head";
 import Login from "../../components/Login";
 import Widgets from '../../components/Widgets';
 import PhotoModal from "../../components/PhotoModal";
+import SearchInput from "../../components/SearchInput";
 
 
 
 const SearchPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
+  const { word } = router.query;
   const {data: session} = useSession();
   const [postBuffer, setPostBuffer] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [advancedSearch, setAdvancedSearch ] = useState({
+    timeStamp:"",
+    user:"",
+    word: word
+  });
+
   const [changed, setChanged] = useState(false);
 
   const { isOpen } = useSelector((state) => {
@@ -37,7 +45,6 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
   const isPhotoModalOpen = useSelector((state => {
     return state.photoModalState.isOpen
   }));
-  const { word } = router.query;
 
   useEffect(() => {
     getDocs(query(
@@ -51,7 +58,7 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
   useEffect(() => {
   const newPosts = [];
   for(let i = 0; i < postBuffer.length; i++) {
-    if(postBuffer[i].data().text.includes(word)){
+    if(postBuffer[i].data().text.includes(advancedSearch.word)){
       newPosts.push(postBuffer[i]);
     }
   }
@@ -85,6 +92,7 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
             </div>
             Back To Feed
           </div>
+          <SearchInput/>
           {posts?.map(post => (
             <Post
               key={post.id}
