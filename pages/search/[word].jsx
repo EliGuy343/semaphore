@@ -24,7 +24,7 @@ import PhotoModal from "../../components/PhotoModal";
 
 
 
-const SearchPage = ({}) => {
+const SearchPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
   const {data: session} = useSession();
   const [postBuffer, setPostBuffer] = useState([]);
@@ -97,6 +97,13 @@ const SearchPage = ({}) => {
             />
         ))}
         </div>
+        <Sidebar/>
+        <Widgets
+          trendingResults={trendingResults}
+          searchPage={true}
+        />
+        {isPhotoModalOpen && <PhotoModal/>}
+        {isOpen && <Modal/>}
     </main>
  </div>)
 

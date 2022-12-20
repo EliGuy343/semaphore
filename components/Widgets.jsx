@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Trending from "./Trending";
-const Widgets = ({trendingResults}) => {
+const Widgets = ({trendingResults, searchPage}) => {
   return (
     <div
       className="hidden lg:inline ml-8 xl:w-[450px]
@@ -10,7 +10,7 @@ const Widgets = ({trendingResults}) => {
         className="sticky top-0 py-1.5 bg-black z-50
           w-11/12 xl:w-9/12 text-white"
       >
-        <div
+        {!searchPage && <div
           className="flex items-center bg-[#202327] p-3 rounded-full relative"
         >
           <MagnifyingGlassIcon className="text-gray-500 h-5 z-50"/>
@@ -21,7 +21,7 @@ const Widgets = ({trendingResults}) => {
               focus:shadow-lg"
             placeholder="Search for what you need"
           />
-        </div>
+        </div>}
       </div>
       <div
         className="text-[#d9d9d9] space-y-3 bg-[#15181c] pt-2 rounded-xl
