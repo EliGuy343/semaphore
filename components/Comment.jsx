@@ -44,8 +44,7 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
     [likes]
   );
 
-  const openPhotoModal = (photoUrl) => {
-    console.log(photoUrl);
+  const openPhotoModal = (photoUrl) => {;
     dispatch(openPhoto({photoUrl}));
   }
 

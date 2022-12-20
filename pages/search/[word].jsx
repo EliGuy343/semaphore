@@ -38,7 +38,6 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
     return state.photoModalState.isOpen
   }));
   const { word } = router.query;
-  console.log(posts);
 
   useEffect(() => {
     getDocs(query(
@@ -46,13 +45,11 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
       orderBy('timestamp', 'desc'),
     )).then(result => {
       setPostBuffer(result.docs)
-      console.log(postBuffer)
     });
   }, [])
 
   useEffect(() => {
   const newPosts = [];
-  console.log(postBuffer)
   for(let i = 0; i < postBuffer.length; i++) {
     if(postBuffer[i].data().text.includes(word)){
       newPosts.push(postBuffer[i]);

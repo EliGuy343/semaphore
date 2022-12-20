@@ -77,7 +77,6 @@ const Feed = () => {
       let i = 0;
       while(i < posts.length && i < updatePosts.length) {
         if(posts[i].id !== updatePosts[i].id) {
-           console.log(posts[i].data().timestamp)
           if( posts[i].data().timestamp.seconds &&
             updatePosts[i].data().timestamp.seconds &&
             posts[i].data().timestamp.seconds <
