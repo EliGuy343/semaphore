@@ -34,10 +34,10 @@ const Widgets = ({trendingResults, searchPage}) => {
               w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
               focus:shadow-lg"
             placeholder="Search for what you need"
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={ (e) => {
-              if(e.key == 'Enter') goToSearch();
-            }}
+            // onChange={(e) => setSearchInput(e.target.value)}
+            // onKeyDown={ (e) => {
+            //   if(e.key == 'Enter') goToSearch();
+            // }}
           />
         </div>}
       </div>

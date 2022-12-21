@@ -6,9 +6,9 @@ const SearchInput = () => {
     <div
       className={`border-b border-gray-700 p-5 flex-col space-x-1`}
     >
-       <div className="w-full divide-y-2 divide-gray-700">
-       <div
-          className="flex items-center bg-[#202327] p-6  rounded-full relative"
+      <div className="w-full divide-y-2 divide-gray-700">
+        <div
+          className="flex items-center bg-[#202327] p-6  rounded-full relative border"
         >
           <input
             className="bg-transparent placeholder-gray-500 outline-none
@@ -22,11 +22,64 @@ const SearchInput = () => {
             // }}
           />
         </div>
-       </div>
-       <div>
+      </div>
+      <div className='flex flex-row space-x-2'>
+        <div className="w-[50%] divide-y-2 divide-gray-700">
+          <div
+            className="flex items-center bg-[#202327] p-6 rounded-full relative mt-5 border"
+          >
+            <input
+              className="bg-transparent placeholder-gray-500 outline-none
+                text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent
+                w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
+                focus:shadow-lg"
+              placeholder="@username"
+              // onChange={(e) => setSearchInput(e.target.value)}
+              // onKeyDown={ (e) => {
+              //   if(e.key == 'Enter') goToSearch();
+              // }}
+            />
+          </div>
+        </div>
+        <div className="w-[25%] divide-y-2 divide-gray-700">
+          <div
+            className="flex items-center bg-[#202327] p-6 rounded-full relative mt-5 border"
+          >
+            <input
+              className="bg-transparent placeholder-gray-500 outline-none
+                text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent
+                w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
+                focus:shadow-lg"
+              placeholder="from"
+              // onChange={(e) => setSearchInput(e.target.value)}
+              // onKeyDown={ (e) => {
+              //   if(e.key == 'Enter') goToSearch();
+              // }}
+            />
+          </div>
+        </div>
+        <div className="w-[25%] divide-y-2 divide-gray-700">
+          <div
+            className="flex items-center bg-[#202327] p-6 rounded-full relative mt-5 border"
+          >
+            <input
+              className="bg-transparent placeholder-gray-500 outline-none
+                text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent
+                w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
+                focus:shadow-lg"
+              placeholder="To"
+              // onChange={(e) => setSearchInput(e.target.value)}
+              // onKeyDown={ (e) => {
+              //   if(e.key == 'Enter') goToSearch();
+              // }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className='flex flex-row items-center justify-center'>
         <button
           className="bg-[#1d9bf0] text-white rounded-full px-4 py-2 mt-5
-            font-bold shadow-md hover:bg-[#1a8cd8]
+            font-bold shadow-md hover:bg-[#1a8cd8] w-[40%]
             disabled:hover:bg-[#1d9bf0] disabled:opacity-40
             disabled:cursor-deafult"
           // disabled={
@@ -37,7 +90,7 @@ const SearchInput = () => {
         >
           Search
         </button>
-       </div>
+      </div>
     </div>
   )
 }
