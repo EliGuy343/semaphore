@@ -1,7 +1,15 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useState } from 'react'
 
 const SearchInput = () => {
+  const router = useRouter();
+  const [parameters, setParameters] = useState({
+    word:"",
+    startDate:"",
+    endDate:"",
+    user:""
+  });
   return (
     <div
       className={`border-b border-gray-700 p-5 flex-col space-x-1`}
@@ -16,10 +24,10 @@ const SearchInput = () => {
               w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
               focus:shadow-lg"
             placeholder="Search for..."
-            // onChange={(e) => setSearchInput(e.target.value)}
-            // onKeyDown={ (e) => {
-            //   if(e.key == 'Enter') goToSearch();
-            // }}
+            onChange={(e) => setParameters(parameters => {
+              parameters.word = e.target.value
+              return parameters;
+            })}
           />
         </div>
       </div>
@@ -38,10 +46,10 @@ const SearchInput = () => {
               style={{
                 colorScheme:'dark'
               }}
-              // onChange={(e) => setSearchInput(e.target.value)}
-              // onKeyDown={ (e) => {
-              //   if(e.key == 'Enter') goToSearch();
-              // }}
+              onChange={(e) => setParameters(parameters => {
+                parameters.user = e.target.value
+                return parameters;
+              })}
             />
           </div>
         </div>
@@ -62,10 +70,10 @@ const SearchInput = () => {
               style={{
                 colorScheme:'dark'
               }}
-              // onChange={(e) => setSearchInput(e.target.value)}
-              // onKeyDown={ (e) => {
-              //   if(e.key == 'Enter') goToSearch();
-              // }}
+              onChange={(e) => setParameters(parameters => {
+                parameters.startDate = e.target.value
+                return parameters;
+              })}
             />
           </div>
         </div>
@@ -86,10 +94,10 @@ const SearchInput = () => {
               style={{
                 colorScheme:'dark'
               }}
-              // onChange={(e) => setSearchInput(e.target.value)}
-              // onKeyDown={ (e) => {
-              //   if(e.key == 'Enter') goToSearch();
-              // }}
+              onChange={(e) => setParameters(parameters => {
+                parameters.endDate = e.target.value
+                return parameters;
+              })}
             />
           </div>
         </div>
@@ -100,11 +108,14 @@ const SearchInput = () => {
             font-bold shadow-md hover:bg-[#1a8cd8] w-[40%]
             disabled:hover:bg-[#1d9bf0] disabled:opacity-40
             disabled:cursor-deafult"
-          // disabled={
-          //   (!input.trim() && !selectedFile)
-          //   || input.length > inputLimit
-          // }
-          // onClick={sendPost}
+          onClick={() => router.push({
+            pathname:`/search/${parameters.word}`,
+            query:{
+              user: parameters.user,
+              startDate: parameters.startDate,
+              endDate: parameters.endDate
+            }
+          })}
         >
           Search
         </button>

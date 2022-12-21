@@ -27,6 +27,7 @@ import SearchInput from "../../components/SearchInput";
 
 const SearchPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
+  console.log(router.query);
   const { word } = router.query;
   const {data: session} = useSession();
   const [postBuffer, setPostBuffer] = useState([]);
