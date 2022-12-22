@@ -21,24 +21,46 @@ const Widgets = ({trendingResults, searchPage}) => {
         className="sticky top-0 py-1.5 bg-black z-50
           w-11/12 xl:w-9/12 text-white"
       >
-        {!searchPage && <div
-          className="flex items-center bg-[#202327] p-3 rounded-full relative"
+        {!searchPage &&
+        <div>
+          <div
+            className="flex items-center bg-[#202327] p-3 rounded-full relative"
+          >
+            <MagnifyingGlassIcon
+              className="text-gray-500 h-5 z-50 cursor-pointer"
+              onClick={() => goToSearch()}
+            />
+            <input
+              className="bg-transparent placeholder-gray-500 outline-none
+                text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent
+                w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
+                focus:shadow-lg"
+              placeholder="Search for what you need"
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={ (e) => {
+                if(e.key == 'Enter') goToSearch();
+              }}
+            />
+          </div>
+          <button
+          className="bg-[#454647] text-white rounded-full ml-[40px] mt-1
+            font-bold shadow-md hover:bg-[#545455] w-[70%]
+            disabled:hover:bg-[#686a6c] disabled:opacity-40
+            disabled:cursor-deafult"
+          // onClick={(e) => {
+          //   e.preventDefault();
+          //   router.push({
+          //   pathname:`/search/${parameters.word}`,
+          //   query:{
+          //     user: parameters.user,
+          //     startDate: parameters.startDate,
+          //     endDate: parameters.endDate
+          //     }
+          //   });
+          // }}
         >
-          <MagnifyingGlassIcon
-            className="text-gray-500 h-5 z-50 cursor-pointer"
-            onClick={() => goToSearch()}
-          />
-          <input
-            className="bg-transparent placeholder-gray-500 outline-none
-              text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent
-              w-full focus:border-[#1d9bf0] rounded-full focus:bg-black
-              focus:shadow-lg"
-            placeholder="Search for what you need"
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={ (e) => {
-              if(e.key == 'Enter') goToSearch();
-            }}
-          />
+          Advanced Search
+        </button>
         </div>}
       </div>
       <div
