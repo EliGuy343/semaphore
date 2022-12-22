@@ -28,13 +28,14 @@ import SearchInput from "../../components/SearchInput";
 const SearchPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
   console.log(router.query);
-  const { word } = router.query;
+  const { word, endDate, startDate, user } = router.query;
   const {data: session} = useSession();
   const [postBuffer, setPostBuffer] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [advancedSearch, setAdvancedSearch ] = useState({
-    timeStamp:"",
-    user:"",
+  const [advancedSearch, setAdvancedSearch] = useState({
+    startDate: startDate,
+    endDate: endDate,
+    user:user,
     word: word
   });
 
@@ -48,20 +49,43 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
   }));
 
   useEffect(() => {
-    getDocs(query(
+    console.log('enter')
+    let searchQuery = query(
       collection(db, 'posts'),
-      orderBy('timestamp', 'desc'),
-    )).then(result => {
+      orderBy('timestamp', 'desc')
+    )
+
+    getDocs(searchQuery).then(result => {
       setPostBuffer(result.docs)
     });
-  }, [])
+  }, [advancedSearch])
+
+
 
   useEffect(() => {
   const newPosts = [];
   for(let i = 0; i < postBuffer.length; i++) {
-    if(postBuffer[i].data().text.includes(advancedSearch.word)){
-      newPosts.push(postBuffer[i]);
+    if(advancedSearch.word) {
+      if(!postBuffer[i].data().text.includes(advancedSearch.word))
+        continue;
     }
+
+   if(advancedSearch.startDate) {
+    const startDate = Date.parse(advancedSearch.startDate);
+    const timestamp = Date.parse(postBuffer.data().timestamp);
+    if(timestamp <= startDate) continue;
+   }
+
+   if(advancedSearch.endDate) {
+    const endDate = Date.parse(advancedSearch.endDate);
+    const timestamp = Date.parse(postBuffer.data().timestamp);
+    if(timestamp >= endDate) continue;
+   }
+
+   if(advancedSearch.user) {
+    if(advancedSearch.user !== postBuffer[i].data().tag) continue;
+   }
+   newPosts.push(postBuffer[i]);
   }
   setPosts(newPosts);
  }, [postBuffer])
@@ -93,7 +117,7 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
             </div>
             Back To Feed
           </div>
-          <SearchInput/>
+          {/* <SearchInput/> */}
           {posts?.map(post => (
             <Post
               key={post.id}

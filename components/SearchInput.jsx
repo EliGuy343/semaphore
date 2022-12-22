@@ -108,14 +108,17 @@ const SearchInput = () => {
             font-bold shadow-md hover:bg-[#1a8cd8] w-[40%]
             disabled:hover:bg-[#1d9bf0] disabled:opacity-40
             disabled:cursor-deafult"
-          onClick={() => router.push({
+          onClick={(e) => {
+            e.preventDefault();
+            router.push({
             pathname:`/search/${parameters.word}`,
             query:{
               user: parameters.user,
               startDate: parameters.startDate,
               endDate: parameters.endDate
-            }
-          })}
+              }
+            });
+          }}
         >
           Search
         </button>
