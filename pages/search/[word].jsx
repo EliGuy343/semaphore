@@ -72,13 +72,15 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
 
    if(advancedSearch.startDate) {
     const startDate = Date.parse(advancedSearch.startDate);
-    const timestamp = Date.parse(postBuffer.data().timestamp);
+    const timestamp = postBuffer[i].data().timestamp.seconds * 1000;
+    console.log(postBuffer[i].data());
+    console.log(startDate);
     if(timestamp <= startDate) continue;
    }
 
    if(advancedSearch.endDate) {
     const endDate = Date.parse(advancedSearch.endDate);
-    const timestamp = Date.parse(postBuffer.data().timestamp);
+    const timestamp = postBuffer[i].data().timestamp.seconds * 1000;
     if(timestamp >= endDate) continue;
    }
 
@@ -117,7 +119,6 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
             </div>
             Back To Feed
           </div>
-          {/* <SearchInput/> */}
           {posts?.map(post => (
             <Post
               key={post.id}

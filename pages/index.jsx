@@ -9,11 +9,13 @@ import { useSelector } from 'react-redux';
 import Modal from '../components/Modal';
 import Widgets from '../components/Widgets';
 import PhotoModal from "../components/PhotoModal";
+import AdvancedSearchModal from "../components/AdvancedSearchModal";
 
 const Home = ({trendingResults, providers}) => {
   const {data: session } = useSession();
   const { isOpen } = useSelector((state) => { return state.modalState });
-  const isPhotoModalOpen = useSelector((state => {return state.photoModalState.isOpen}));
+  const isPhotoModalOpen = useSelector((state) => {return state.photoModalState.isOpen});
+  const isAdvancedSearchOpen = useSelector((state) => {return state.advancedSearchModalState.isOpen})
 
   if(!session) return <Login providers={providers}/>
   return (
@@ -30,6 +32,7 @@ const Home = ({trendingResults, providers}) => {
         />
         {isOpen && <Modal/>}
         {isPhotoModalOpen && <PhotoModal/>}
+        {isAdvancedSearchOpen && <AdvancedSearchModal/>}
       </main>
     </div>
   )
@@ -66,4 +69,4 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default Home
+export default Home;

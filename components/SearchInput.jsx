@@ -1,20 +1,24 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { setSearchIsOpen } from '../store';
 
 const SearchInput = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [parameters, setParameters] = useState({
     word:"",
     startDate:"",
     endDate:"",
     user:""
   });
+
   return (
     <div
       className={`border-b border-gray-700 p-5 flex-col space-x-1`}
     >
-      <div className="w-full divide-y-2 divide-gray-700">
+      <div className="w-[400px] divide-y-2 divide-gray-700">
         <div
           className="flex items-center bg-[#202327] p-6  rounded-full relative border"
         >
@@ -110,14 +114,17 @@ const SearchInput = () => {
             disabled:cursor-deafult"
           onClick={(e) => {
             e.preventDefault();
-            router.push({
-            pathname:`/search/${parameters.word}`,
-            query:{
-              user: parameters.user,
-              startDate: parameters.startDate,
-              endDate: parameters.endDate
-              }
-            });
+            if(parameters.word) {
+              router.push({
+              pathname:`/search/${parameters.word}`,
+              query:{
+                user: parameters.user,
+                startDate: parameters.startDate,
+                endDate: parameters.endDate
+                }
+              });
+            }
+            dispatch(setSearchIsOpen(false));
           }}
         >
           Search

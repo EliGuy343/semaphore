@@ -21,11 +21,13 @@ import Login from "../components/Login";
 import Comment from "../components/Comment";
 import Widgets from '../components/Widgets';
 import PhotoModal from "../components/PhotoModal";
+import AdvancedSearchModal from "../components/AdvancedSearchModal";
 
 const initialCommentLimit = 10;
 const PostPage = ({trendingResults, followResults, providers}) => {
 
   const router = useRouter();
+  const isAdvancedSearchOpen = useSelector((state) => {return state.advancedSearchModalState.isOpen})
 
   const {data: session} = useSession();
   const { isOpen } = useSelector((state) => {
@@ -127,7 +129,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
           <div
             className="flex items-center px-1.5 py-2 border-b
               border-gray-700 text-[#d9d9d9] font-semibold text-xl
-              gap-x-4 sticky top-0 z-50 bg-black"
+              gap-x-4 sticky top-0 z-47 bg-black"
           >
             <div
               className="hoverAnimation w-9 h-9 flex items-center
@@ -181,6 +183,7 @@ const PostPage = ({trendingResults, followResults, providers}) => {
         />
         {isPhotoModalOpen && <PhotoModal/>}
         {isOpen && <Modal/>}
+        {isAdvancedSearchOpen && <AdvancedSearchModal/>}
       </main>
     </div>
   );
