@@ -43,9 +43,9 @@ const Widgets = ({trendingResults, searchPage}) => {
             />
           </div>
           <button
-          className="bg-[#454647] text-white rounded-full ml-[40px] mt-1
-            font-bold shadow-md hover:bg-[#545455] w-[70%]
-            disabled:hover:bg-[#686a6c] disabled:opacity-40
+          className="bg-[#2b2c2c] text-white rounded-full ml-[15%] mt-2
+            font-xl shadow-md hover:bg-[#434343] w-[70%]
+            disabled:hover:bg-[#4d4d4e] disabled:opacity-40
             disabled:cursor-deafult"
           // onClick={(e) => {
           //   e.preventDefault();

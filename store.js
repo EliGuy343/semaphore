@@ -38,14 +38,27 @@ const photoModalSlice = createSlice({
   }
 })
 
+const adavancedSearchModalSlice = createSlice({
+  name:'adavancedSearchModalState',
+  initialState: {
+    isOpen:false,
+  },
+  reducers: {
+    setSearchIsOpen(state, action) {
+      state.isOpen = action.payload;
+      return state;
+    },
+  }
+})
 
 export const { setIsOpen, setPostId } = modalSlice.actions;
-
 export const {openPhoto, closePhoto} = photoModalSlice.actions;
+export const { setSearchIsOpen } = adavancedSearchModalSlice.actions;
 
 export const store = configureStore({
   reducer: {
     modalState: modalSlice.reducer,
-    photoModalState: photoModalSlice.reducer
+    photoModalState: photoModalSlice.reducer,
+    adavancedSearchModalState: adavancedSearchModalSlice.reducer,
   },
 })

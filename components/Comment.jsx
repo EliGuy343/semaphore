@@ -108,7 +108,6 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
               className="h-5 text-[#6e767d] group-hover:text=[#1d9bf0]"
             />
           </div>
-          {/*image for when, the reply with img feature will be ready */}
         </div>
         <div className="flex flex-row space-x-[55px] justify-start text-[#6e767d]">
           {session.user.uid === comment?.id && (
