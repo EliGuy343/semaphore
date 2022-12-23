@@ -27,7 +27,6 @@ import SearchInput from "../../components/SearchInput";
 
 const SearchPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
-  console.log(router.query);
   const { word, endDate, startDate, user } = router.query;
   const {data: session} = useSession();
   const [postBuffer, setPostBuffer] = useState([]);
@@ -49,7 +48,6 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
   }));
 
   useEffect(() => {
-    console.log('enter')
     let searchQuery = query(
       collection(db, 'posts'),
       orderBy('timestamp', 'desc')
@@ -73,8 +71,6 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
    if(advancedSearch.startDate) {
     const startDate = Date.parse(advancedSearch.startDate);
     const timestamp = postBuffer[i].data().timestamp.seconds * 1000;
-    console.log(postBuffer[i].data());
-    console.log(startDate);
     if(timestamp <= startDate) continue;
    }
 

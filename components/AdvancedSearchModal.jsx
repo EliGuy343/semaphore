@@ -10,7 +10,6 @@ import SearchInput from "./SearchInput";
 const  advancedSearchModal = () => {
   const dispatch = useDispatch();
   const searchState = useSelector((state) => {return state.advancedSearchModalState});
-  console.log(searchState)
   const closeModal = () => {
     dispatch(setSearchIsOpen(false));
   }
