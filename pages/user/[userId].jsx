@@ -4,11 +4,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Sidebar from "../../components/Sidebar";
 import Widgets from "../../components/Widgets";
-
+import { MapPinIcon } from "@heroicons/react/24/solid";
 
 const UserPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
-  const { id } = router.query;
+  const { userId } = router.query;
   const {data: session} = useSession();
   return (
   <div>
@@ -39,15 +39,24 @@ const UserPage = ({trendingResults, followResults, providers}) => {
             Back To Feed
           </div>
           <div className="border-b border-gray-700 p-5 flex space-x-3">
-            <div className="flex items-center justify-center space-x-2">
+            <div className="flex space-x-4">
               <img
                 src={session.user.image}
                 alt="profile pic"
-                className="h-[120px] w-[120px]  border border-gray-800"
+                className="h-[150px] w-[150px] rounded-full"
               />
-              <div>
-                <h2 className="text-white font-bold">{session.user.name}</h2>
-                <h3 className="text-gray-500">@{session.user.tag}</h3>
+              <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">
+                <div>
+                  <h2 className="text-white font-bold">{session.user.name}</h2>
+                  <h3 className="text-gray-500">@{session.user.tag}</h3>
+                </div>
+                <h3 className="text-white">bio not provided</h3>
+                <div className="flex space-x-2">
+                  <div className="flex space-x-1 items-center justify-center">
+                    < MapPinIcon className="text-gray-500 h-[22px]"/>
+                    <h2 className="text-gray-500">Location not provided</h2>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
