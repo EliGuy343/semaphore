@@ -5,11 +5,37 @@ import { useRouter } from "next/router";
 import Sidebar from "../../components/Sidebar";
 import Widgets from "../../components/Widgets";
 import { MapPinIcon } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query
+} from "@firebase/firestore";
 
 const UserPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
   const { userId } = router.query;
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
   const {data: session} = useSession();
+
+  useEffect(() => {
+    getDoc(doc(db, "users", userId)).then(
+      result => {
+        setUser(result.data())
+        setLoading(false);
+      }
+    )
+  }, [])
+
+
+  if(!session) return <Login providers={providers}/>
+
   return (
   <div>
     <Head>
@@ -39,7 +65,7 @@ const UserPage = ({trendingResults, followResults, providers}) => {
             Back To Feed
           </div>
           <div className="border-b border-gray-700 p-5 flex space-x-3">
-            <div className="flex space-x-4">
+            <div className="flex items-center space-x-4">
               <img
                 src={session.user.image}
                 alt="profile pic"
@@ -50,7 +76,7 @@ const UserPage = ({trendingResults, followResults, providers}) => {
                   <h2 className="text-white font-bold">{session.user.name}</h2>
                   <h3 className="text-gray-500">@{session.user.tag}</h3>
                 </div>
-                <h3 className="text-white">bio not provided</h3>
+                <h3 className="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere, leo eu feugiat pulvinar, dui libero tristique neque, ut varius nunc dui eu mauris. Ut porttitor justo eu leo accumsan, eleifend accumsan risus ultricies</h3>
                 <div className="flex space-x-2">
                   <div className="flex space-x-1 items-center justify-center">
                     < MapPinIcon className="text-gray-500 h-[22px]"/>
