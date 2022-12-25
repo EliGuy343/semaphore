@@ -15,7 +15,7 @@ const Home = ({trendingResults, providers}) => {
   const {data: session } = useSession();
   const { isOpen } = useSelector((state) => { return state.modalState });
   const isPhotoModalOpen = useSelector((state) => {return state.photoModalState.isOpen});
-  const isAdvancedSearchOpen = useSelector((state) => {return state.advancedSearchModalState.isOpen})
+  const isAdvancedSearchOpen = useSelector((state) => {return state.advancedSearchModalState.isOpen});
 
   if(!session) return <Login providers={providers}/>
   return (

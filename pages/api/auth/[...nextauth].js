@@ -1,33 +1,29 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from 'next-auth/providers/google';
 import {
-  onSnapshot,
   collection,
   query,
-  orderBy,
-  limit,
   getDocs,
-  getDoc,
   addDoc,
-  doc,
-  setDoc
+  where
 } from "firebase/firestore";
 import { db } from '../../../firebase';
 
-async function CreateGetUser(email, userImage) {
-
-  const userRef = doc(db, "posts", email);
-  const userDoc = await getDoc(userRef);
-
-  if(!userDoc.exists()) {
-    await setDoc(doc(db, 'users', email), {
-      email: email,
-      image: userImage
+async function CreateGetUser(session) {
+  const userQuery = query(
+    collection(db, "users"),
+    where("email", "==", session.user.email)
+  );
+  let userDoc = await getDocs(userQuery);
+  if(!userDoc.docs.length) {
+    userDoc = await addDoc(collection(db, 'users'), {
+      email: session.user.email,
+      image: session.user.image
     })
   }
-
-
+  return userDoc.docs[0].id;
 }
+
 
 export default NextAuth({
   secret: process.env.JWT_SECRET,
@@ -42,7 +38,7 @@ export default NextAuth({
       session.user.tag = session.user.name
         .split(' ').join('').toLocaleLowerCase();
       session.user.uid = token.sub;
-      CreateGetUser(session.user.email, session.user.image)
+      session.user.id = await CreateGetUser(session);
       return session;
     }
   },
