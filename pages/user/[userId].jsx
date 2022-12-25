@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Sidebar from "../../components/Sidebar";
 import Widgets from "../../components/Widgets";
 import { MapPinIcon } from "@heroicons/react/24/solid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   doc,
@@ -16,6 +16,7 @@ import {
   orderBy,
   query
 } from "@firebase/firestore";
+import { db } from "../../firebase";
 
 const UserPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
