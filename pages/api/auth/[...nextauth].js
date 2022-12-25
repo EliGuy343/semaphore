@@ -9,19 +9,32 @@ import {
 } from "firebase/firestore";
 import { db } from '../../../firebase';
 
-async function CreateGetUser(session) {
+async function createOrGetUser(session) {
   const userQuery = query(
     collection(db, "users"),
     where("email", "==", session.user.email)
   );
   let userDoc = await getDocs(userQuery);
   if(!userDoc.docs.length) {
-    userDoc = await addDoc(collection(db, 'users'), {
+    const result = await addDoc(collection(db, 'users'), {
       email: session.user.email,
-      image: session.user.image
-    })
+      image: session.user.image,
+      tag: session.user.name.split(' ').join('').toLocaleLowerCase(),
+      name: session.user.name
+      })
+    session.user.uid = result.id;
+    session.user.tag = session.user.name
+      .split(' ').join('').toLocaleLowerCase();
   }
-  return userDoc.docs[0].id;
+  else {
+    const userData = userDoc.docs[0].data();
+    session.user.uid = userDoc.docs[0].id;
+    session.user.tag = userData.tag;
+    session.user.image = userData.image;
+    session.user.name = userData.name;
+
+  }
+
 }
 
 
@@ -35,10 +48,7 @@ export default NextAuth({
   ],
   callbacks:{
     async session({session, token}) {
-      session.user.tag = session.user.name
-        .split(' ').join('').toLocaleLowerCase();
-      session.user.uid = token.sub;
-      session.user.id = await CreateGetUser(session);
+      await createOrGetUser(session);
       return session;
     }
   },
