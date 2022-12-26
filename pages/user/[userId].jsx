@@ -14,17 +14,87 @@ import {
   limit,
   onSnapshot,
   orderBy,
-  query
+  query,
+  where
 } from "@firebase/firestore";
 import { db } from "../../firebase";
+import { useSelector } from "react-redux";
+import Post from '../../components/Post';
+import AdvancedSearchModal from '../../components/AdvancedSearchModal';
+import Modal from '../../components/Modal';
+import PhotoModal from '../../components/PhotoModal';
+
+const initalPostsLimit = 5;
 
 const UserPage = ({trendingResults, followResults, providers}) => {
   const router = useRouter();
   const { userId } = router.query;
+  const {data: session} = useSession();
+
+  const isAdvancedSearchOpen = useSelector((state) => {
+    return state.advancedSearchModalState.isOpen
+  });
+  const { isOpen } = useSelector((state) => {
+    return state.modalState
+  });
+  const isPhotoModalOpen = useSelector((state => {
+    return state.photoModalState.isOpen
+  }));
+
+  const [moreToLoad, setMoreToLoad] = useState(true);
+  const [lim, setLim] = useState(initalPostsLimit);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const {data: session} = useSession();
+  const [newerPostsNotification, setNewerPostsNotification] = useState(false);
+  const [updatePosts, setUpdatePosts] = useState([]);
+  const [changed, setChanged] = useState(false);
+  const [posts, setPosts] = useState([]);
+
+  const queryForUpdate = query(
+    collection(db, 'posts'),
+    orderBy('timestamp', 'desc'),
+    where("id", "==", userId),
+    limit(lim),
+  );
+
+  const loadMorePosts = () => {
+    getDocs(queryForUpdate).then((result) => {
+      if(result.docs.length <= posts.length) setMoreToLoad(false)
+      setPosts(result.docs);
+      setLim((lim) => lim+initalPostsLimit);
+    })
+  }
+
+  const LoadNewerPosts = () => {
+    setPosts(posts => {
+      let i = 0;
+      while(i < posts.length && i < updatePosts.length) {
+        if(posts[i].id !== updatePosts[i].id) {
+          if( posts[i].data().timestamp.seconds &&
+            updatePosts[i].data().timestamp.seconds &&
+            posts[i].data().timestamp.seconds <
+            updatePosts[i].data().timestamp.seconds
+          ) {
+            posts.unshift(updatePosts[i])
+            i++;
+          }
+          else {
+            posts.splice(i,1);
+          }
+        }
+        else {
+          i++;
+        }
+      }
+      return posts;
+    });
+    setNewerPostsNotification(false);
+  }
+
+  useEffect(() => {
+    loadMorePosts();
+  },[])
 
   useEffect(() => {
     getDoc(doc(db, "users", userId)).then(
@@ -40,78 +110,135 @@ const UserPage = ({trendingResults, followResults, providers}) => {
     )
   }, [])
 
+  useEffect(()=>{
+    const queryForNotifications = query(
+      collection(db, 'posts'),
+      orderBy('timestamp', 'desc'),
+      where("id", "==", userId),
+      limit(lim)
+    );
+    return onSnapshot(queryForNotifications, (snapshot) => {
+      setUpdatePosts(snapshot.docs);
+    });
+  },[db]);
+
+  useEffect(() => {
+    if(
+      posts.length !== updatePosts.length
+      || updatePosts[0]?.id !== posts[0]?.id
+    ) {
+      setNewerPostsNotification(true);
+    }
+    else {
+      setNewerPostsNotification(false);
+    }
+  }, [updatePosts]);
+
+  useEffect(() =>{
+    if(changed) {
+      getDocs(queryForUpdate).then((result) => {
+        setPosts(result.docs);
+        setChanged(false);
+      })
+    }
+  }, [changed]);
 
   if(!session) return <Login providers={providers}/>
 
   return (
   <div>
     <Head>
-        <title>Semaphore</title>
-        <link rel="icon" href="/signal.ico" />
-      </Head>
-      <main
-        className='bg-black min-h-screen flex justify-start max-w-[1500px]
-          mx-auto'
+      <title>Semaphore</title>
+      <link rel="icon" href="/signal.ico" />
+    </Head>
+    <main
+      className='bg-black min-h-screen flex justify-start max-w-[1500px]
+        mx-auto'
+    >
+      <div
+        className="flex-grow border-l border-r border-gray-700
+          max-w-2xl sm:ml-[73px] xl:ml-[370px]"
       >
         <div
-          className="flex-grow border-l border-r border-gray-700
-            max-w-2xl sm:ml-[73px] xl:ml-[370px]"
+          className="flex items-center px-1.5 py-2 border-b
+            border-gray-700 text-[#d9d9d9] font-semibold text-xl
+            gap-x-4 sticky top-0 z-47 bg-black"
         >
           <div
-            className="flex items-center px-1.5 py-2 border-b
-              border-gray-700 text-[#d9d9d9] font-semibold text-xl
-              gap-x-4 sticky top-0 z-47 bg-black"
+            className="hoverAnimation w-9 h-9 flex items-center
+              justify-center xl:px-0"
+            onClick={() =>  router.push("/")}
           >
-            <div
-              className="hoverAnimation w-9 h-9 flex items-center
-                justify-center xl:px-0"
-              onClick={() =>  router.push("/")}
-            >
-              <ArrowLeftIcon className="h-5 text-white" />
-            </div>
-            Back To Feed
+            <ArrowLeftIcon className="h-5 text-white" />
           </div>
-          <div className="border-b border-gray-700 p-5 flex space-x-3">
-            {!notFound && !loading &&
-              <div className="flex items-center space-x-4">
-                <img
-                  src={user.image}
-                  alt="profile pic"
-                  className="h-[150px] w-[150px] rounded-full"
-                />
-                <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">
-                  <div>
-                    <h2 className="text-white font-bold">{user.name}</h2>
-                    <h3 className="text-gray-500">@{user.tag}</h3>
-                  </div>
-                  <h3 className="text-white">
-                    {user.bio}
-                  </h3>
-                  <div className="flex space-x-2">
-                    <div className="flex space-x-1 items-center justify-center">
-                      < MapPinIcon className="text-gray-500 h-[22px]"/>
-                      <h2 className="text-gray-500">
-                        {user.location ? (`${user.location}`)
-                          :"Location not provided"
-                        }
-                      </h2>
-                    </div>
-                  </div>
+          Back To Feed
+        </div>
+        {!notFound && !loading && <div className="border-b border-gray-700 p-5 flex space-x-3">
+          <div className="flex items-center space-x-4">
+            <img
+              src={user.image}
+              alt="profile pic"
+              className="h-[150px] w-[150px] rounded-full"
+            />
+            <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">
+              <div>
+                <h2 className="text-white font-bold">{user.name}</h2>
+                <h3 className="text-gray-500">@{user.tag}</h3>
+              </div>
+              <h3 className="text-white">
+                {user.bio}
+              </h3>
+              <div className="flex space-x-2">
+                <div className="flex space-x-1 items-center justify-center">
+                  < MapPinIcon className="text-gray-500 h-[22px]"/>
+                  <h2 className="text-gray-500">
+                    {user.location ? (`${user.location}`)
+                      :"Location not provided"
+                    }
+                  </h2>
                 </div>
               </div>
-            }
-            {!loading && notFound &&
-              <div className="flex items-center px-1.5 py-2">
-                <h2 className=" text-white font-bold text-[20px]">
-                  Sorry, user not found
-                </h2>
-              </div>
-            }
+            </div>
           </div>
-        </div>
-        <Sidebar/>
-        <Widgets trendingResults={trendingResults}/>
-      </main>
+        </div>}
+        {newerPostsNotification &&
+          <div
+            className="p-3 flex border-b border-gray-700
+              justify-center text-center items-center cursor-pointer
+              hover:bg-[#d9d9d9] hover:bg-opacity-20"
+            onClick={LoadNewerPosts}
+          >
+            <span className="text-blue-400">Load Newer Posts</span>
+          </div>
+        }
+        {posts?.map(post => (
+          <Post
+            key={post.id}
+            id={post.id}
+            post={post.data()}
+            setChanged={setChanged}
+          />
+        ))}
+        {moreToLoad && <div
+          className="p-3 flex border-b border-gray-700
+            justify-center text-center items-center cursor-pointer
+            hover:bg-[#d9d9d9] hover:bg-opacity-20"
+          onClick={loadMorePosts}
+        >
+          <span className="text-blue-400">Load more</span>
+        </div>}
+        {!loading && notFound && <div className="flex items-center px-1.5 py-2">
+          <h2 className=" text-white font-bold text-[20px]">
+            Sorry, user not found
+          </h2>
+        </div>}
+      </div>
+      <Sidebar/>
+      <Widgets trendingResults={trendingResults}/>
+      {isPhotoModalOpen && <PhotoModal/>}
+      {isOpen && <Modal/>}
+      {isAdvancedSearchOpen && <AdvancedSearchModal/>}
+    </main>
   </div>
   )
 }
