@@ -67,6 +67,10 @@ const Comment = ({id, comment, postId, setCommmentsChanged}) => {
         src={comment?.userImg}
         alt=""
         className="h-11 w-11 rounded-full mr-4"
+        onClick={(e)=> {
+          e.stopPropagation();
+          router.push(`/user/${post.id}`)
+        }}
       />
       <div className="flex flex-col space-y-2 w-full">
         <div className="flex justify-between">

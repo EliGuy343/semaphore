@@ -17,10 +17,12 @@ import {
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const inputLimit = 1000;
 
 const Input = () => {
+  const router = useRouter();
   const {data: session} = useSession();
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -82,6 +84,10 @@ const Input = () => {
         src={session.user.image}
         alt="profile pic"
         className="h-11 w-11 rounded-full cursor-pointer"
+        onClick={(e)=> {
+          e.stopPropagation();
+          router.push(`/user/${session.user.uid}`)
+        }}
       />
 
       <div className="w-full  divide-y-2 divide-gray-700">
