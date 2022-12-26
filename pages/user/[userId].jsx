@@ -75,28 +75,36 @@ const UserPage = ({trendingResults, followResults, providers}) => {
             {!notFound && !loading &&
               <div className="flex items-center space-x-4">
                 <img
-                  src={session.user.image}
+                  src={user.image}
                   alt="profile pic"
                   className="h-[150px] w-[150px] rounded-full"
                 />
                 <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">
                   <div>
-                    <h2 className="text-white font-bold">{session.user.name}</h2>
-                    <h3 className="text-gray-500">@{session.user.tag}</h3>
+                    <h2 className="text-white font-bold">{user.name}</h2>
+                    <h3 className="text-gray-500">@{user.tag}</h3>
                   </div>
-                  <h3 className="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere, leo eu feugiat pulvinar, dui libero tristique neque, ut varius nunc dui eu mauris. Ut porttitor justo eu leo accumsan, eleifend accumsan risus ultricies</h3>
+                  <h3 className="text-white">
+                    {user.bio}
+                  </h3>
                   <div className="flex space-x-2">
                     <div className="flex space-x-1 items-center justify-center">
                       < MapPinIcon className="text-gray-500 h-[22px]"/>
-                      <h2 className="text-gray-500">Location not provided</h2>
+                      <h2 className="text-gray-500">
+                        {user.location ? (`${user.location}`)
+                          :"Location not provided"
+                        }
+                      </h2>
                     </div>
                   </div>
                 </div>
               </div>
             }
-            {!loading &&
+            {!loading && notFound &&
               <div className="flex items-center px-1.5 py-2">
-                <h2 className=" text-white font-bold text-[20px]">Sorry, user was not found</h2>
+                <h2 className=" text-white font-bold text-[20px]">
+                  Sorry, user not found
+                </h2>
               </div>
             }
           </div>
