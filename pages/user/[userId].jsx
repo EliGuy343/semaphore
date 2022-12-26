@@ -23,12 +23,18 @@ const UserPage = ({trendingResults, followResults, providers}) => {
   const { userId } = router.query;
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const {data: session} = useSession();
 
   useEffect(() => {
     getDoc(doc(db, "users", userId)).then(
       result => {
-        setUser(result.data())
+        if(!result.exists()) {
+          setNotFound(true);
+        }
+        else {
+          setUser(result.data())
+        }
         setLoading(false);
       }
     )
@@ -66,26 +72,33 @@ const UserPage = ({trendingResults, followResults, providers}) => {
             Back To Feed
           </div>
           <div className="border-b border-gray-700 p-5 flex space-x-3">
-            <div className="flex items-center space-x-4">
-              <img
-                src={session.user.image}
-                alt="profile pic"
-                className="h-[150px] w-[150px] rounded-full"
-              />
-              <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">
-                <div>
-                  <h2 className="text-white font-bold">{session.user.name}</h2>
-                  <h3 className="text-gray-500">@{session.user.tag}</h3>
-                </div>
-                <h3 className="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere, leo eu feugiat pulvinar, dui libero tristique neque, ut varius nunc dui eu mauris. Ut porttitor justo eu leo accumsan, eleifend accumsan risus ultricies</h3>
-                <div className="flex space-x-2">
-                  <div className="flex space-x-1 items-center justify-center">
-                    < MapPinIcon className="text-gray-500 h-[22px]"/>
-                    <h2 className="text-gray-500">Location not provided</h2>
+            {!notFound && !loading &&
+              <div className="flex items-center space-x-4">
+                <img
+                  src={session.user.image}
+                  alt="profile pic"
+                  className="h-[150px] w-[150px] rounded-full"
+                />
+                <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">
+                  <div>
+                    <h2 className="text-white font-bold">{session.user.name}</h2>
+                    <h3 className="text-gray-500">@{session.user.tag}</h3>
+                  </div>
+                  <h3 className="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent posuere, leo eu feugiat pulvinar, dui libero tristique neque, ut varius nunc dui eu mauris. Ut porttitor justo eu leo accumsan, eleifend accumsan risus ultricies</h3>
+                  <div className="flex space-x-2">
+                    <div className="flex space-x-1 items-center justify-center">
+                      < MapPinIcon className="text-gray-500 h-[22px]"/>
+                      <h2 className="text-gray-500">Location not provided</h2>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            }
+            {!loading &&
+              <div className="flex items-center px-1.5 py-2">
+                <h2 className=" text-white font-bold text-[20px]">Sorry, user was not found</h2>
+              </div>
+            }
           </div>
         </div>
         <Sidebar/>
