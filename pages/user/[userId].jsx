@@ -28,7 +28,7 @@ import Login from "../../components/Login";
 
 const initalPostsLimit = 5;
 
-const UserPage = ({trendingResults, followResults, providers}) => {
+const UserPage = ({trendingResults, providers}) => {
   const router = useRouter();
   const { userId } = router.query;
   const {data: session} = useSession();
@@ -175,7 +175,9 @@ const UserPage = ({trendingResults, followResults, providers}) => {
           </div>
           Back To Feed
         </div>
-        {!notFound && !loading && <User userPage={true} user={user}/>}
+        {!notFound && !loading &&
+          <User userPage={true} user={user}/>
+        }
         {newerPostsNotification &&
           <div
             className="p-3 flex border-b border-gray-700

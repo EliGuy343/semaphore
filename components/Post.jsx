@@ -182,7 +182,9 @@ const Post = ({id, post, postPage, setChanged}) => {
               e.stopPropagation();
               deleteDoc(doc(db, "posts", id));
               setChanged(true);
-              router.push("/");
+              if(postPage) {
+                router.push("/");
+              }
             }}
           >
             <div className="icon group-hover:bg-red-600/10">

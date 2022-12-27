@@ -24,7 +24,7 @@ import PhotoModal from "../components/PhotoModal";
 import AdvancedSearchModal from "../components/AdvancedSearchModal";
 
 const initialCommentLimit = 10;
-const PostPage = ({trendingResults, followResults, providers}) => {
+const PostPage = ({trendingResults, providers}) => {
 
   const router = useRouter();
   const isAdvancedSearchOpen = useSelector((state) => {return state.advancedSearchModalState.isOpen})
