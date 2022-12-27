@@ -11,10 +11,12 @@ import {
   EllipsisHorizontalIcon
 } from "@heroicons/react/24/outline"
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Sidebar = () => {
 
   const {data: session } = useSession();
+  const router = useRouter();
   return (
     <div
       className="hidden sm:flex flex-col items-center xl:items-start
@@ -29,10 +31,13 @@ const Sidebar = () => {
           width={30}
           height={30}
           color="white"
+          onClick={()=> {
+            router.push(`/`);
+          }}
         />
       </div>
       <div className="space-y-3 mt-4 mb-2.5 xl:ml-24">
-        <SidebarLink text="home" Icon={HomeIcon} />
+        <SidebarLink text="home" Icon={HomeIcon} link={`/`} />
         <SidebarLink text="explore" Icon={HashtagIcon} />
         <SidebarLink text="Notifications" Icon={BellIcon} />
         <SidebarLink text="Inbox" Icon={InboxIcon} />
