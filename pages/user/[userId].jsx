@@ -24,6 +24,7 @@ import AdvancedSearchModal from '../../components/AdvancedSearchModal';
 import Modal from '../../components/Modal';
 import PhotoModal from '../../components/PhotoModal';
 import User from "../../components/User";
+import Login from "../../components/Login";
 
 const initalPostsLimit = 5;
 
