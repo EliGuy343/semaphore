@@ -2,21 +2,65 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "@firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { db, storage } from "../firebase";
 
 const UserSettings = ({}) => {
 
   const router = useRouter();
   const {data: session} = useSession();
-
   const [userData, setUserData] = useState({
     name: session?.user?.name,
-    tag: session?.user?.tag,
-    location: session?.user?.location,
-    bio: session?.user?.bio,
-    image: session?.user?.image
-  })
+    tag:  session?.user?.tag,
+    location:  session?.user?.location,
+    bio:  session?.user?.bio,
+  });
+
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const filePickerRef = useRef();
+
+  const applyChanges = async () => {
+    if(loading) return;
+    setLoading(true);
+
+    setDoc(doc(db, 'users', session.user.uid), {
+      name: userData.name,
+      tag: userData.tag,
+      location: userData.location ? userData.location : null,
+      bio: userData.bio ? userData.bio : null,
+      email:session.user.email,
+      image:session.user.image ? session.user.image : null
+    });
+
+    const imageRef = ref(storage, `users/${session.user.uid}/image`);
+    if(selectedFile) {
+      await uploadString(imageRef, selectedFile, 'data_url').then( async () => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, 'users', session.user.uid), {
+          image: downloadURL
+        })
+      });
+    }
+
+    setLoading(false);
+    setUserData({
+      name: session?.user?.name,
+      tag: session?.user?.tag,
+      location: session?.user?.location,
+      bio: session?.user?.bio,
+    });
+    setSelectedFile(null);
+  }
 
   const addImageToPost = (e) => {
     const reader = new FileReader();
@@ -28,6 +72,8 @@ const UserSettings = ({}) => {
       setSelectedFile(readerEvent.target.result);
     }
   }
+
+  if(!session) return <Login providers={providers}/>
 
   return (
     <div
@@ -55,7 +101,7 @@ const UserSettings = ({}) => {
           className={`h-[150px] w-[150px] rounded-full`}
         />
           <button
-            className="hidden xl:inline ml-auto bg-[#2b2c2c] text-white
+            className="xl:inline ml-auto bg-[#2b2c2c] text-white
               rounded-full w-56 h-[32px] text-md font-bold shadow-md hover:bg-[#434343]"
             onClick={() => filePickerRef.current.click()}
           >
@@ -70,7 +116,6 @@ const UserSettings = ({}) => {
       </div>
       <div className="flex flex-col items-center space-y-2">
         <label
-          for="username"
           className="flex justify-center items-center py-2 text-gray-300
             font-bold text-[16px]"
         >
@@ -81,7 +126,7 @@ const UserSettings = ({}) => {
             @
           </div>
           <input
-            value={userData.tag}
+            defaultValue={userData.tag}
             type="text"
             name="tag"
             placeholder="username..."
@@ -89,14 +134,13 @@ const UserSettings = ({}) => {
             className="w-full p-2.5 ml-2 bg-transparent outline-none text-white"
             onChange={(e) => {
               setUserData((userData) => {
-                userData[e.target.name] = e.target.value;
+                userData[e.target.name] = e.target.value
                 return userData;
               })
             }}
           />
         </div>
         <label
-          for="displayname"
           className="flex justify-center items-center py-2 text-gray-300
             font-bold text-[16px]"
         >
@@ -105,7 +149,7 @@ const UserSettings = ({}) => {
         <div className="flex items-center text-gray-400 border rounded-md w-[80%]">
             <input
               name="name"
-              value={userData.name}
+              defaultValue={userData.name}
               type="text"
               placeholder="Display Name"
               id="displayname"
@@ -119,7 +163,6 @@ const UserSettings = ({}) => {
             />
         </div>
         <label
-          for="bio"
           className="flex justify-center items-center py-2 text-gray-300
             font-bold text-[16px]"
         >
@@ -128,7 +171,7 @@ const UserSettings = ({}) => {
         <div className="flex items-center text-gray-400 border rounded-md w-[80%]">
             <textarea
               name="bio"
-              value={userData.bio}
+              defaultValue={userData.bio}
               type="text"
               placeholder="bio"
               id="bio"
@@ -142,7 +185,6 @@ const UserSettings = ({}) => {
             />
         </div>
         <label
-          for="location"
           className="flex justify-center items-center py-2 text-gray-300
             font-bold text-[16px]"
         >
@@ -151,7 +193,7 @@ const UserSettings = ({}) => {
         <div className="flex items-center text-gray-400 border rounded-md w-[80%]">
             <input
               name="location"
-              value={userData.location}
+              defaultValue={userData.location}
               type="text"
               placeholder="Location"
               id="location "
@@ -167,6 +209,8 @@ const UserSettings = ({}) => {
         <button
           className="bg-[#1d9bf0] text-white rounded-full px-4 py-2.5 !mt-4
             font-bold shadow-md hover:bg-[#1a8cd8]"
+          onClick={applyChanges}
+          disabled={loading}
         >
           Apply Changes
         </button>

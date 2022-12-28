@@ -32,6 +32,8 @@ async function createOrGetUser(session) {
     session.user.tag = userData.tag;
     session.user.image = userData.image;
     session.user.name = userData.name;
+    session.user.bio = userData?.bio;
+    session.user.location = userData?.location;
   }
 }
 
