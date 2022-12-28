@@ -45,14 +45,14 @@ const Widgets = ({trendingResults, searchPage}) => {
               />
             </div>
             <button
-            className="bg-[#2b2c2c] text-white rounded-full ml-[15%] mt-2
-              font-xl shadow-md hover:bg-[#434343] w-[70%]
-              disabled:hover:bg-[#4d4d4e] disabled:opacity-40
-              disabled:cursor-deafult"
-            onClick={(e) => {
-              e.preventDefault();
-              dispatch(setSearchIsOpen(true));
-            }}
+              className="bg-[#2b2c2c] text-white rounded-full ml-[15%] mt-2
+                font-xl shadow-md hover:bg-[#434343] w-[70%]
+                disabled:hover:bg-[#4d4d4e] disabled:opacity-40
+                disabled:cursor-deafult"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(setSearchIsOpen(true));
+              }}
           >
             Advanced Search
           </button>
