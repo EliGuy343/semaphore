@@ -18,7 +18,7 @@ const SearchInput = () => {
     <div
       className={`border-b border-gray-700 p-5 flex-col space-x-1`}
     >
-      <div className="w-[400px] divide-y-2 divide-gray-700">
+      <div className="w-[300px] sm:w-[400px] divide-y-2 divide-gray-700">
         <div
           className="flex items-center bg-[#202327] p-6  rounded-full relative border"
         >
