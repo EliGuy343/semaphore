@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import Input from './Input';
 import { useEffect, useState } from "react";
 import {
@@ -114,34 +115,17 @@ const Feed = () => {
       >
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div
-          className="hoverAnimation w-[100px] flex items-center
-            justify-center xl:px-0 ml-auto xl:hidden"
+          className="flex items-center
+          justify-center ml-auto"
         >
-          <div className="relative w-full lg:max-w-sm">
-            <select
-              className="w-full bg-black p-2.5 text-[12px] sm:text-[16px] text-white font-extrabold border-[3px] border-gray-500
-                rounded-md shadow-sm outline-none appearance-none
-                text-center"
-            >
-                <option className='text-[12px] sm:text-[16px]'>Menu</option>
-                <option
-                  className='text-[12px] sm:text-[16px]'
-                  onClick={() => {
-                    router.push("/settings")
-                  }}
-                >
-                  Settings
-                </option>
-                <option
-                  className='text-[12px] sm:text-[16px]'
-                  onClick={() => {
-                    dispatch(setSearchIsOpen(true));
-                  }}
-                >
-                  Search
-                </option>
-            </select>
-        </div>
+          <Cog6ToothIcon
+            onClick={() => {router.push('/settings')}}
+            className="h-6 w-9 sm:hidden hoverAnimation text-white"
+          />
+          <MagnifyingGlassIcon
+            onClick={()=> {dispatch(setSearchIsOpen(true))}}
+            className="h-6 w-9 lg:hidden hoverAnimation text-white"
+          />
         </div>
       </div>
       <Input />
