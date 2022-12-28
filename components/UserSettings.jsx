@@ -60,6 +60,7 @@ const UserSettings = ({}) => {
       bio: session?.user?.bio,
     });
     setSelectedFile(null);
+    router.push(`/user/${session.user.uid}`)
   }
 
   const addImageToPost = (e) => {
