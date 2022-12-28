@@ -1,4 +1,3 @@
-import { SparklesIcon } from "@heroicons/react/24/outline";
 import Input from './Input';
 import { useEffect, useState } from "react";
 import {
@@ -11,6 +10,9 @@ import {
 } from "firebase/firestore";
 import { db } from '../firebase';
 import Post from './Post';
+import { useDispatch } from 'react-redux';
+import { setSearchIsOpen } from '../store';
+import { useRouter } from 'next/router';
 
 const initalPostsLimit = 5;
 
@@ -21,6 +23,9 @@ const Feed = () => {
   const [updatePosts, setUpdatePosts] = useState([]);
   const [changed, setChanged] = useState(false);
   const [newerPostsNotification, setNewerPostsNotification] = useState(false);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const queryForUpdate = query(
     collection(db, 'posts'),
@@ -109,10 +114,34 @@ const Feed = () => {
       >
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div
-          className="hoverAnimation w-9 h-9 flex items-center
-            justify-center xl:px-0 ml-auto"
+          className="hoverAnimation w-[100px] flex items-center
+            justify-center xl:px-0 ml-auto xl:hidden"
         >
-          <SparklesIcon className="h-5 text-white"/>
+          <div className="relative w-full lg:max-w-sm">
+            <select
+              className="w-full bg-black p-2.5 text-[12px] sm:text-[16px] text-white font-extrabold border-[3px] border-gray-500
+                rounded-md shadow-sm outline-none appearance-none
+                text-center"
+            >
+                <option className='text-[12px] sm:text-[16px]'>Menu</option>
+                <option
+                  className='text-[12px] sm:text-[16px]'
+                  onClick={() => {
+                    router.push("/settings")
+                  }}
+                >
+                  Settings
+                </option>
+                <option
+                  className='text-[12px] sm:text-[16px]'
+                  onClick={() => {
+                    dispatch(setSearchIsOpen(true));
+                  }}
+                >
+                  Search
+                </option>
+            </select>
+        </div>
         </div>
       </div>
       <Input />
