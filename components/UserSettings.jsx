@@ -94,7 +94,7 @@ const UserSettings = ({}) => {
         </div>
         Back To Feed
       </div>
-      <div className="flex flex-row items-center p-5 pl-[90px] pr-[95px]">
+      <div className="flex flex-row items-center p-5 sm:pl-[90px] sm:pr-[95px]">
         <img
           src={selectedFile ? selectedFile : session?.user?.image}
           alt="profile pic"
