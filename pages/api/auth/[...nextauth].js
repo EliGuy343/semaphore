@@ -32,11 +32,8 @@ async function createOrGetUser(session) {
     session.user.tag = userData.tag;
     session.user.image = userData.image;
     session.user.name = userData.name;
-
   }
-
 }
-
 
 export default NextAuth({
   secret: process.env.JWT_SECRET,

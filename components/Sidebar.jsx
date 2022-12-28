@@ -42,7 +42,7 @@ const Sidebar = () => {
         <SidebarLink text="Notifications" Icon={BellIcon} />
         <SidebarLink text="Inbox" Icon={InboxIcon} />
         <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
-        <SidebarLink text="User Settings" Icon={UserIcon} />
+        <SidebarLink text="User Settings" Icon={UserIcon} link={`/settings/`} />
         <SidebarLink text="Lists" Icon={ListBulletIcon} />
         <SidebarLink text="More" Icon={EllipsisHorizontalIcon} />
         <button
