@@ -1,10 +1,33 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useRef, useState } from "react";
 
 const UserSettings = ({}) => {
+
   const router = useRouter();
   const {data: session} = useSession();
+
+  const [userData, setUserData] = useState({
+    name: session?.user?.name,
+    tag: session?.user?.tag,
+    location: session?.user?.location,
+    bio: session?.user?.bio,
+    image: session?.user?.image
+  })
+  const [selectedFile, setSelectedFile] = useState(null);
+  const filePickerRef = useRef();
+
+  const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if(e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    }
+  }
 
   return (
     <div
@@ -27,16 +50,23 @@ const UserSettings = ({}) => {
       </div>
       <div className="flex flex-row items-center p-5 pl-[90px] pr-[95px]">
         <img
-          src={session?.user.image}
+          src={selectedFile ? selectedFile : session?.user?.image}
           alt="profile pic"
           className={`h-[150px] w-[150px] rounded-full`}
         />
           <button
             className="hidden xl:inline ml-auto bg-[#2b2c2c] text-white
               rounded-full w-56 h-[32px] text-md font-bold shadow-md hover:bg-[#434343]"
+            onClick={() => filePickerRef.current.click()}
           >
             Upload Photo
           </button>
+          <input
+            type="file"
+            hidden
+            onChange={addImageToPost}
+            ref={filePickerRef}
+          />
       </div>
       <div className="flex flex-col items-center space-y-2">
         <label
@@ -51,10 +81,18 @@ const UserSettings = ({}) => {
             @
           </div>
           <input
+            value={userData.tag}
             type="text"
+            name="tag"
             placeholder="username..."
             id="username"
             className="w-full p-2.5 ml-2 bg-transparent outline-none text-white"
+            onChange={(e) => {
+              setUserData((userData) => {
+                userData[e.target.name] = e.target.value;
+                return userData;
+              })
+            }}
           />
         </div>
         <label
@@ -66,10 +104,18 @@ const UserSettings = ({}) => {
         </label>
         <div className="flex items-center text-gray-400 border rounded-md w-[80%]">
             <input
+              name="name"
+              value={userData.name}
               type="text"
               placeholder="Display Name"
               id="displayname"
               className="w-full p-2.5 ml-2 bg-transparent outline-none text-white"
+              onChange={(e) => {
+                setUserData((userData) => {
+                  userData[e.target.name] = e.target.value;
+                  return userData;
+                })
+              }}
             />
         </div>
         <label
@@ -81,10 +127,18 @@ const UserSettings = ({}) => {
         </label>
         <div className="flex items-center text-gray-400 border rounded-md w-[80%]">
             <textarea
+              name="bio"
+              value={userData.bio}
               type="text"
               placeholder="bio"
               id="bio"
               className="w-full p-2.5 ml-2 bg-transparent outline-none text-white"
+              onChange={(e) => {
+                setUserData((userData) => {
+                  userData[e.target.name] = e.target.value;
+                  return userData;
+                })
+              }}
             />
         </div>
         <label
@@ -96,14 +150,22 @@ const UserSettings = ({}) => {
         </label>
         <div className="flex items-center text-gray-400 border rounded-md w-[80%]">
             <input
+              name="location"
+              value={userData.location}
               type="text"
               placeholder="Location"
               id="location "
               className="w-full p-2.5 ml-2 bg-transparent outline-none text-white"
+              onChange={(e) => {
+                setUserData((userData) => {
+                  userData[e.target.name] = e.target.value;
+                  return userData;
+                })
+              }}
             />
         </div>
         <button
-          className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 !mt-4
+          className="bg-[#1d9bf0] text-white rounded-full px-4 py-2.5 !mt-4
             font-bold shadow-md hover:bg-[#1a8cd8]"
         >
           Apply Changes
