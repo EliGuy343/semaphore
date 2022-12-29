@@ -1,14 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment} from "react";
+import { Fragment, useState} from "react";
 import {
   XMarkIcon
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import {setSearchIsOpen} from "../store";
 import SearchInput from "./SearchInput";
+import SearchUsersInput from "./SearchUsersInput"
 
 const  advancedSearchModal = () => {
   const dispatch = useDispatch();
+  const [activeTabIndex, setActiveTabIndex] = useState('posts');
   const searchState = useSelector((state) => {return state.advancedSearchModalState});
   const closeModal = () => {
     dispatch(setSearchIsOpen(false));
@@ -63,8 +65,32 @@ const  advancedSearchModal = () => {
                   Search
                 </h2>
               </div>
+              <div className="flex space-x-3 border-b border-gray-700">
+                <button
+                  className={`p-2 border-b-4 transition-colors duration-300 text-white text-[18px] font-semibold w-[50%] ${
+                    'posts' === activeTabIndex
+                      ? 'border-white'
+                      : 'border-transparent hover:border-gray-200'
+                  }`}
+                  // Change the active tab on click.
+                  onClick={() => setActiveTabIndex('posts')}
+                >
+                  Posts
+                </button>
+                <button
+                  className={`p-2 border-b-4 transition-colors duration-300 text-white text-[18px] font-semibold w-[50%] ${
+                    'users' === activeTabIndex
+                      ? 'border-white'
+                      : 'border-transparent hover:border-gray-200'
+                  }`}
+                  // Change the active tab on click.
+                  onClick={() => setActiveTabIndex('users')}
+                >
+                  Users
+                </button>
+              </div>
               <div className="">
-               <SearchInput/>
+               {activeTabIndex === 'posts' ? <SearchInput/> : <SearchUsersInput/>}
               </div>
             </div>
           </Transition.Child>
