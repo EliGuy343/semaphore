@@ -114,10 +114,11 @@ const SearchInput = () => {
             disabled:cursor-deafult"
           onClick={(e) => {
             e.preventDefault();
-            if(parameters.word) {
+            if(parameters.word || parameters.user) {
               router.push({
-              pathname:`/search/${parameters.word}`,
+              pathname:`/search/posts`,
               query:{
+                word: parameters.word,
                 user: parameters.user,
                 startDate: parameters.startDate,
                 endDate: parameters.endDate

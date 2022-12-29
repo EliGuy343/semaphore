@@ -11,7 +11,7 @@ const Widgets = ({trendingResults, searchPage}) => {
   const [searchInput, setSearchInput] = useState();
 
   const goToSearch = () => {
-    if(searchInput?.length > 0) router.push(`/search/${searchInput}`);
+    if(searchInput?.length > 0) router.push(`/search/posts?word=${searchInput}`);
   }
 
   return (
