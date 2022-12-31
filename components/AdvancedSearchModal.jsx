@@ -19,8 +19,8 @@ const  advancedSearchModal = () => {
   return (
     <Transition.Root show={searchState.isOpen} as={Fragment}>
       <Dialog as="div" className="fixed z-59 inset-0 pt-8" onClose={closeModal}>
-        <div className="items-start justify-center min-w-[800] min-h-[800px]
-         pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+        <div className="items-start justify-center min-w-[700] min-h-[700px]
+         pt-4 pb-20 text-center sm:block sm:p-0"
         >
           <Transition.Child
             as={Fragment}

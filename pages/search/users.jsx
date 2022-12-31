@@ -11,13 +11,8 @@ import User from "../../components/User";
 import Widgets from "../../components/Widgets";
 import {
   collection,
-  doc,
   getDocs,
-  limit,
-  onSnapshot,
-  orderBy,
   query,
-  where
 } from "@firebase/firestore";
 import { db } from "../../firebase";
 
@@ -43,7 +38,6 @@ const SearchUsersPage = ({trendingResults, providers}) => {
     )
 
     getDocs(searchQuery).then(result => {
-      console.log(result.docs)
       setUserBuffer(result.docs)
     });
   }, [])
