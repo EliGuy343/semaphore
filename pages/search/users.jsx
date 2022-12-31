@@ -52,11 +52,11 @@ const SearchUsersPage = ({trendingResults, providers}) => {
     const newPosts = [];
     for(let i = 0; i < userBuffer.length; i++) {
       if(user) {
-        if(!userBuffer[i].data().name.includes(user))
+        if(!userBuffer[i].data()?.name?.includes(user))
           continue;
       }
       if(tag) {
-        if(!userBuffer[i].data().tag.includes(tag))
+        if(!userBuffer[i].data()?.tag?.includes(tag))
         continue;
       }
       newPosts.push(userBuffer[i]);

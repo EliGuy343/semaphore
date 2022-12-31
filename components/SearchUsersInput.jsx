@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { setSearchIsOpen } from "../store";
 
 const SearchUsersInput = () => {
   const router = useRouter();
@@ -62,6 +63,18 @@ const SearchUsersInput = () => {
       <button
         className="bg-[#1d9bf0] text-white rounded-full px-3 py-2 !mt-4
           font-bold shadow-md hover:bg-[#1a8cd8]"
+        onClick={() => {
+          if(parameters.user || parameters.tag) {
+            router.push({
+              pathname:`/search/users`,
+              query:{
+                user: parameters.user,
+                tag: parameters.tag
+              }
+            });
+          }
+          dispatch(setSearchIsOpen(false));
+        }}
       >
         Search Users
       </button>
