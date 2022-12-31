@@ -1,12 +1,8 @@
 import {
   collection,
-  doc,
   getDocs,
-  limit,
-  onSnapshot,
   orderBy,
   query,
-  where
 } from "@firebase/firestore";
 import {getProviders, getSession, useSession } from 'next-auth/react';
 import { useRouter } from "next/router";
@@ -21,7 +17,6 @@ import Head from "next/head";
 import Login from "../../components/Login";
 import Widgets from '../../components/Widgets';
 import PhotoModal from "../../components/PhotoModal";
-import SearchInput from "../../components/SearchInput";
 
 
 
@@ -31,12 +26,6 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
   const {data: session} = useSession();
   const [postBuffer, setPostBuffer] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [advancedSearch, setAdvancedSearch] = useState({
-    startDate: startDate,
-    endDate: endDate,
-    user:user,
-    word: word
-  });
 
   const [changed, setChanged] = useState(false);
 
@@ -55,33 +44,34 @@ const SearchPage = ({trendingResults, followResults, providers}) => {
 
     getDocs(searchQuery).then(result => {
       setPostBuffer(result.docs)
+      setChanged(false);
     });
-  }, [advancedSearch])
+  }, [changed])
 
 
 
   useEffect(() => {
     const newPosts = [];
     for(let i = 0; i < postBuffer.length; i++) {
-      if(advancedSearch.word) {
-        if(!postBuffer[i].data().text.includes(advancedSearch.word))
+      if(word) {
+        if(!postBuffer[i].data().text.includes(word))
           continue;
       }
 
-    if(advancedSearch.startDate) {
-      const startDate = Date.parse(advancedSearch.startDate);
+    if(startDate) {
+      const startDate = Date.parse(startDate);
       const timestamp = postBuffer[i].data().timestamp.seconds * 1000;
       if(timestamp <= startDate) continue;
     }
 
-    if(advancedSearch.endDate) {
-      const endDate = Date.parse(advancedSearch.endDate);
+    if(endDate) {
+      const endDate = Date.parse(endDate);
       const timestamp = postBuffer[i].data().timestamp.seconds * 1000;
       if(timestamp >= endDate) continue;
     }
 
-    if(advancedSearch.user) {
-      if(advancedSearch.user !== postBuffer[i].data().tag) continue;
+    if(user) {
+      if(user !== postBuffer[i].data().tag) continue;
     }
     newPosts.push(postBuffer[i]);
     }
