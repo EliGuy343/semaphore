@@ -20,7 +20,7 @@ import PhotoModal from "../../components/PhotoModal";
 
 
 
-const SearchPage = ({trendingResults, followResults, providers}) => {
+const SearchPage = ({trendingResults, providers}) => {
   const router = useRouter();
   const { word, endDate, startDate, user } = router.query;
   const {data: session} = useSession();

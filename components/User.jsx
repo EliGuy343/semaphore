@@ -17,7 +17,7 @@ const User = ({userPage, user, id}) => {
           src={user.image}
           alt="profile pic"
           className={`${userPage ? 'h-[150px] w-[150px]' : 'h-[50px] w-[50px]'}
-            rounded-full`
+            rounded-full object-cover`
           }
         />
         <div className="flex flex-col space-x-2 space-y-2 items-start justify-between p-3">

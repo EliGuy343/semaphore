@@ -16,9 +16,6 @@ const UserSettingsPage = ({providers}) => {
     <main className='bg-black min-h-screen flex justify-start max-w-[1500px] mx-auto'>
       <Sidebar/>
       <UserSettings/>
-      {/* {isOpen && <Modal/>}
-      {isPhotoModalOpen && <PhotoModal/>}
-      {isAdvancedSearchOpen && <AdvancedSearchModal/>} */}
     </main>
   </div>
 }

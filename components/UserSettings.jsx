@@ -3,10 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import {
-  addDoc,
-  collection,
   doc,
-  serverTimestamp,
   setDoc,
   updateDoc,
 } from "@firebase/firestore";
@@ -99,7 +96,7 @@ const UserSettings = ({}) => {
         <img
           src={selectedFile ? selectedFile : session?.user?.image}
           alt="profile pic"
-          className={`h-[150px] w-[150px] rounded-full`}
+          className={`h-[150px] w-[150px] rounded-full object-cover`}
         />
           <button
             className="xl:inline ml-auto bg-[#2b2c2c] text-white
