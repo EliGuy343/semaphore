@@ -95,7 +95,7 @@ const SearchUsersPage = ({trendingResults, providers}) => {
           </div>
           <div className="flex flex-col">
             {users.map((user) => {
-              return <User key={user.id} user={user.data()}/>
+              return <User key={user.id} id={user.id} user={user.data()}/>
             })}
           </div>
         </div>

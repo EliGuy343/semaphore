@@ -1,8 +1,17 @@
 import { MapPinIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
 
-const User = ({userPage, user}) => {
+const User = ({userPage, user, id}) => {
+  const router = useRouter();
   return (
-    <div className="border-b border-gray-700 p-5 flex space-x-3">
+    <div
+      className={`border-b border-gray-700 p-5 flex space-x-3 ${!userPage && "hover:cursor-pointer"}`}
+      onClick={()=>{
+        if(!userPage) {
+          router.push(`/user/${id}`);
+        }
+      }}
+    >
       <div className="flex items-center space-x-4">
         <img
           src={user.image}
