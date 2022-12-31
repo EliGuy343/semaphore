@@ -72,7 +72,6 @@ const  advancedSearchModal = () => {
                       ? 'border-white'
                       : 'border-transparent hover:border-gray-200'
                   }`}
-                  // Change the active tab on click.
                   onClick={() => setActiveTabIndex('posts')}
                 >
                   Posts
@@ -83,7 +82,6 @@ const  advancedSearchModal = () => {
                       ? 'border-white'
                       : 'border-transparent hover:border-gray-200'
                   }`}
-                  // Change the active tab on click.
                   onClick={() => setActiveTabIndex('users')}
                 >
                   Users
