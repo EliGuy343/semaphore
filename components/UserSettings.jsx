@@ -30,7 +30,7 @@ const UserSettings = ({}) => {
     if(loading) return;
     setLoading(true);
 
-    setDoc(doc(db, 'users', session.user.uid), {
+    await updateDoc(doc(db, 'users', session.user.uid), {
       name: userData.name,
       tag: userData.tag,
       location: userData.location ? userData.location : null,
